@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LetsEat</string>
+    <string name="sm_name">surpriseMe</string>
+    <string name="sm_mainText">This is what we found for you...</string>
+    <string name="defaultNameOfRest">defaultNameOfRest</string>
+
+    <string name="businessSearchURL">https://api.yelp.com/v3/businesses/search?location=Toronto</string>
+    <string name="businessDetailsURL">https://api.yelp.com/v3/businesses/{id}</string>
+    <string name="apikey">Bearer -bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx</string>
+</resources>
