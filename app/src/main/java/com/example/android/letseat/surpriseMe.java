@@ -24,12 +24,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class surpriseMe extends AppCompatActivity {
 
     LocationManager currentLocation;
 
-    private static final String LOG_TAG = mainMenu.class.getSimpleName();
+    private static final String LOG_TAG = surpriseMe.class.getSimpleName();
 
     HashMap<Integer, Business> map = new HashMap<>();
 
@@ -42,8 +43,6 @@ public class surpriseMe extends AppCompatActivity {
         //get data from yelp api
         FetchDataAsyncTask task = new FetchDataAsyncTask();
         task.execute();
-
-
     }
 
 
@@ -68,9 +67,15 @@ public class surpriseMe extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String jsonResponse) {
-            TextView results = findViewById(R.id.resultsText);
-            results.setText(jsonResponse);
+
             parseJson(jsonResponse);
+
+            Random rand = new Random();
+            int myRand = rand.nextInt(20); //between 0-19
+
+            TextView display = findViewById(R.id.resultsText);
+            Log.d(LOG_TAG, "My Random Number: " + myRand);
+            display.setText(map.get(myRand).toString());
         }
 
         /**
@@ -78,31 +83,14 @@ public class surpriseMe extends AppCompatActivity {
          */
         private String parseJson(String rawdata) {
             try {
+
                 JSONObject json = new JSONObject(rawdata);
                 JSONArray businessArray = json.getJSONArray("businesses");
 
                 //turn jsonarray which represents businesses list into map of Business class
                 for (int i = 0; i < businessArray.length(); i++) {
-                    JSONObject obj = (JSONObject) businessArray.get(i);
-
-                    //get all categories from json
-                    List<String> categories = new ArrayList<>();
-                    categories.add(obj.getJSONObject("categories").getString("title"));
-
-                    //construct new business and put into the map
-                    Business business = new Business(
-                            obj.getString("name"),
-                            obj.getBoolean("is_closed"),
-                            obj.getString("image_url"),
-                            categories,
-                            obj.getInt("rating"),
-                            obj.getString("display_address"),
-                            obj.getString("phone"),
-                            obj.getDouble("distance")
-                    );
-                    map.put(i, business);
+                    insertBusiness((JSONObject) businessArray.get(i), i);
                 }
-
 
             } catch (JSONException e) {
                 Log.d(LOG_TAG, "Parse JSON Error");
@@ -112,12 +100,55 @@ public class surpriseMe extends AppCompatActivity {
             return "";
         }
 
+        /**
+         * Takes a jsonobject representing a business and creates an instance of our
+         * business class, then inserts into the hashmap
+         *
+         * @param obj   - the json object to be evaluated
+         * @param index - index of the object on the hashmap
+         */
+        private void insertBusiness(JSONObject obj, int index) {
+            //get all categories from json
+            List<String> categories = new ArrayList<>();
+            try {
+
+                //categories
+                JSONArray jsonCategories = obj.getJSONArray("categories");
+                for (int i = 0; i < jsonCategories.length(); i++) {
+                    categories.add(jsonCategories.getJSONObject(i).getString("title"));
+                }
+
+                //location
+                JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
+                String location = jsonLocation.toString();
+                Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
+
+
+                //construct new business and put into the map
+                Business business = new Business(
+                        obj.getString("name"),
+                        obj.getBoolean("is_closed"),
+                        obj.getString("image_url"),
+                        categories,
+                        obj.getInt("rating"),
+                        location,
+                        obj.getString("phone"),
+                        obj.getDouble("distance")
+                );
+                map.put(index, business);
+                Log.d(LOG_TAG, "Businesses Count: " + map.size());
+            } catch (JSONException e) {
+                Log.d(LOG_TAG, "Insert business failed...");
+                e.printStackTrace();
+            }
+
+        }
 
         /**
          * Returns new URL object from the given string URL.
          */
         private URL createUrl(String stringUrl) {
-            URL url = null;
+            URL url;
             try {
                 url = new URL(stringUrl);
             } catch (MalformedURLException exception) {
