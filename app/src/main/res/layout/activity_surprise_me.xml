@@ -17,12 +17,20 @@
         android:textSize="40sp"
         android:text="@string/sm_mainText" />
 
+    <ProgressBar
+        android:id="@+id/sm_progressBar"
+        android:minHeight="20dip"
+        android:maxHeight="20dip"
+        android:layout_below="@+id/sm_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <TextView
-        android:id="@+id/resultsText"
+        android:id="@+id/sm_resultsText"
         android:layout_below="@+id/sm_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/defaultNameOfRest" />
+        android:text="" />
 
 
 </RelativeLayout>

@@ -1,31 +1,27 @@
 package com.example.android.letseat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -43,11 +38,11 @@ public class surpriseMe extends AppCompatActivity {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 1000;
-
-
+    private FragmentManager fragmentManager;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location myLocation;
 
+    //holds businesses objects
     SparseArray<Business> bArray = new SparseArray<>();
 
     @Override
@@ -61,16 +56,13 @@ public class surpriseMe extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case LOCATION_REQUEST_CODE:
-                // If the permission is granted, get the location,
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocation();
-                } else {
-                    Log.d(LOG_TAG, "Failed to get permissions");
-                }
-                break;
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            // If the permission is granted, get the location,
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                Log.d(LOG_TAG, "Failed to get permissions");
+            }
         }
     }
 
@@ -113,8 +105,20 @@ public class surpriseMe extends AppCompatActivity {
     }
 
 
+    public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
 
-    public class FetchDataAsyncTask extends AsyncTask<URL, Void, String> {
+        private ProgressBar mProgressDialog;
+        private TextView textView;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = (ProgressBar) findViewById(R.id.sm_progressBar);
+            textView = (TextView) findViewById(R.id.sm_resultsText);
+            mProgressDialog.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+            mProgressDialog.setProgress(0);
+        }
 
         @Override
         protected String doInBackground(URL... url) {
@@ -142,14 +146,22 @@ public class surpriseMe extends AppCompatActivity {
         }
 
         @Override
+        protected void onProgressUpdate(Integer... progress) {
+            Log.d(LOG_TAG, "" + progress[0]);
+            mProgressDialog.setProgress(progress[0]);
+        }
+
+        @Override
         protected void onPostExecute(String jsonResponse) {
+            mProgressDialog.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
 
             parseJson(jsonResponse);
 
             Random rand = new Random();
             int myRand = rand.nextInt(20); //between 0-19
 
-            TextView display = findViewById(R.id.resultsText);
+            TextView display = findViewById(R.id.sm_resultsText);
             Log.d(LOG_TAG, "My Random Number: " + myRand);
             display.setText(bArray.get(myRand).toString());
         }
@@ -263,7 +275,7 @@ public class surpriseMe extends AppCompatActivity {
                 }
 
             } catch (IOException e) {
-                Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+                Log.e(LOG_TAG, "Problem retrieving JSON results.", e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
