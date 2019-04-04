@@ -1,7 +1,5 @@
 package com.example.android.letseat;
 
-import android.support.annotation.NonNull;
-
 import java.util.List;
 
 public class Business {
@@ -27,7 +25,7 @@ public class Business {
 
     @Override
     public String toString() {
-        String address = displayAddress.replaceAll("[\\p{Punct}&&[^0-9]&&[^,]]", ""); //regex for removing all except comma,num
+        String address = displayAddress.replaceAll("[\\p{Punct}&&[^0-9]&&[^,]]", ""); //regex for removing all except comma, numbers
         return name + " (" + rating + "/5) Rating On Yelp, " + System.getProperty("line.separator") + address
                 + ", " + phone;
     }

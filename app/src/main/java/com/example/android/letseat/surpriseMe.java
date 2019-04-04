@@ -6,9 +6,9 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
@@ -34,13 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class surpriseMe extends AppCompatActivity {
+public class surpriseMe extends FragmentActivity {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 1000;
-    private FragmentManager fragmentManager;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private FusedLocationProviderClient myFusedLocationClient;
     private Location myLocation;
+    private BusinessDisplayFragment myFrag;
 
     //holds businesses objects
     SparseArray<Business> bArray = new SparseArray<>();
@@ -78,8 +78,8 @@ public class surpriseMe extends AppCompatActivity {
             Log.d(LOG_TAG, "getLocation: permissions granted");
         }
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        Task<Location> task = mFusedLocationClient.getLastLocation();
+        myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        Task<Location> task = myFusedLocationClient.getLastLocation();
 
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
@@ -108,15 +108,20 @@ public class surpriseMe extends AppCompatActivity {
     public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
 
         private ProgressBar mProgressDialog;
-        private TextView textView;
+        private FragmentManager fragmentManager = getSupportFragmentManager();
+        private BusinessDisplayFragment myFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog = (ProgressBar) findViewById(R.id.sm_progressBar);
-            textView = (TextView) findViewById(R.id.sm_resultsText);
+            mProgressDialog = findViewById(R.id.sm_progressBar);
+
+            //visibility hidden until data loaded
             mProgressDialog.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.INVISIBLE);
+            fragmentManager.beginTransaction()
+                    .hide(myFrag)
+                    .commit();
+
             mProgressDialog.setProgress(0);
         }
 
@@ -146,24 +151,22 @@ public class surpriseMe extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... progress) {
-            Log.d(LOG_TAG, "" + progress[0]);
-            mProgressDialog.setProgress(progress[0]);
-        }
-
-        @Override
         protected void onPostExecute(String jsonResponse) {
             mProgressDialog.setVisibility(View.INVISIBLE);
-            textView.setVisibility(View.VISIBLE);
+            fragmentManager.beginTransaction()
+                    .show(myFrag)
+                    .commit();
 
+            //parses the raw string data and populates the sparsearray with business objects
             parseJson(jsonResponse);
 
+            //randomly chooses a business to display
             Random rand = new Random();
             int myRand = rand.nextInt(20); //between 0-19
 
-            TextView display = findViewById(R.id.sm_resultsText);
-            Log.d(LOG_TAG, "My Random Number: " + myRand);
-            display.setText(bArray.get(myRand).toString());
+            myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+            myFrag.Initialize(bArray.get(myRand));
+
         }
 
         /**
@@ -257,6 +260,7 @@ public class surpriseMe extends AppCompatActivity {
 
             HttpURLConnection urlConnection = null;
             InputStream inputStream = null;
+
             try {
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");

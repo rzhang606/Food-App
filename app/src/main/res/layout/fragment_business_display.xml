@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     android:columnCount="2"
     android:rowCount="4"
-    tools:context=".businessDisplayFragment">
+    tools:context=".BusinessDisplayFragment">
 
     <TextView
+        android:id="@+id/b_frag_Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="0"
@@ -16,15 +17,19 @@
         android:text="Name" />
 
     <TextView
+        android:id="@+id/b_frag_Category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
         android:layout_column="0"
         android:layout_row="1"
         android:text="Category" />
 
     <TextView
+        android:id="@+id/b_frag_Rating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
         android:layout_column="1"
         android:layout_row="1"
         android:text="Rating" />
@@ -46,6 +51,7 @@
         android:layout_row="3" />
 
     <TextView
+        android:id="@+id/b_frag_Distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
