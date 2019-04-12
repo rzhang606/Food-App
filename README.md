@@ -11,3 +11,4 @@ App designed to help users decide on where to eat!
 - link indexing (https://developer.android.com/studio/write/app-link-indexing)
 - performance tweaking
 - fixing the strings (lots of non-res defined strings)
+- add checks to make sure google services is active and location works, otherwise, throw up a toast to let users know
