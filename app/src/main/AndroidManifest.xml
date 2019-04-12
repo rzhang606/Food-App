@@ -30,10 +30,15 @@
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.android.letseat.mainMenu"></meta-data>
+            android:value="com.example.android.letseat.mainMenu" />
         <meta-data
             android:name="yelpAPIKey"
-            android:value="-bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx"></meta-data>
+            android:value="-bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx" />
+
+        <activity
+            android:name=".search"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

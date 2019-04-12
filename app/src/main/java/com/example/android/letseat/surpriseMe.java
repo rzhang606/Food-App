@@ -1,6 +1,7 @@
 package com.example.android.letseat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -38,12 +39,19 @@ public class surpriseMe extends FragmentActivity {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 1000;
-    private FusedLocationProviderClient myFusedLocationClient;
     private Location myLocation;
-    private BusinessDisplayFragment myFrag;
 
     //holds businesses objects
     SparseArray<Business> bArray = new SparseArray<>();
+
+    /**
+     * TODO: Implement cache for the requests
+     * TODO: Fix the ugly UI
+     * <p>
+     * Higher priority:
+     * TODO: get the pictures to display as well
+     * TODO: have the open maps feature work (ez)
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,16 @@ public class surpriseMe extends FragmentActivity {
         getLocation();
 
     }
+
+    public void findAnother(View view) {
+
+        Random rand = new Random();
+        int myRand = rand.nextInt(20); //between 0-19
+
+        BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+        myFrag.Initialize(bArray.get(myRand));
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -78,7 +96,7 @@ public class surpriseMe extends FragmentActivity {
             Log.d(LOG_TAG, "getLocation: permissions granted");
         }
 
-        myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Task<Location> task = myFusedLocationClient.getLastLocation();
 
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -222,7 +240,8 @@ public class surpriseMe extends FragmentActivity {
                         obj.getInt("rating"),
                         location,
                         obj.getString("phone"),
-                        obj.getDouble("distance")
+                        obj.getDouble("distance"),
+                        obj.getString("price")
                 );
                 bArray.append(index, business);
                 Log.d(LOG_TAG, "Businesses Count: " + bArray.size());

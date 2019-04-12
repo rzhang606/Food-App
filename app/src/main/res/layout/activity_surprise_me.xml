@@ -7,29 +7,27 @@
     tools:context=".surpriseMe">
 
 
-    <TextView
-        android:id="@+id/sm_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:textSize="40sp"
-        android:text="@string/sm_mainText" />
-
     <ProgressBar
         android:id="@+id/sm_progressBar"
         android:minHeight="20dip"
         android:maxHeight="20dip"
-        android:layout_below="@+id/sm_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <fragment
         class="com.example.android.letseat.BusinessDisplayFragment"
         android:id="@+id/sm_fragment"
-        android:layout_below="@+id/sm_title"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_below="@+id/sm_fragment"
+        android:gravity="bottom"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:text="Find Another"
+        android:onClick="findAnother"
         android:layout_height="wrap_content" />
 
 

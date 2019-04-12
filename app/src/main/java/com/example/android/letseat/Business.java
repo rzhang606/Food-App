@@ -11,8 +11,9 @@ public class Business {
     private String displayAddress;
     private String phone;
     private double distance;
+    private String price;
 
-    Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress, String phone, double distance) {
+    Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress, String phone, double distance, String price) {
         this.name = name;
         this.isClosed = isClosed;
         this.imageURL = imageURL;
@@ -21,6 +22,7 @@ public class Business {
         this.displayAddress = displayAddress;
         this.phone = phone;
         this.distance = distance;
+        this.price = price;
     }
 
     @Override
@@ -60,6 +62,10 @@ public class Business {
 
     public double getDistance() {
         return distance;
+    }
+
+    public String getPrice() {
+        return price;
     }
 
 }

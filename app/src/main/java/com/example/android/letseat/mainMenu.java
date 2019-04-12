@@ -49,7 +49,9 @@ public class mainMenu extends AppCompatActivity {
      * @param view
      */
     public void searchButton(View view) {
-
+        Log.d(LOG_TAG, "Search buttib clicked");
+        Intent intent = new Intent(this, search.class);
+        startActivity(intent);
     }
 
 
