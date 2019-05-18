@@ -42,7 +42,7 @@ public class surpriseMe extends FragmentActivity {
     private Location myLocation;
 
     //holds businesses objects
-    SparseArray<Business> bArray = new SparseArray<>();
+    ArrayList<Business> bArray = new ArrayList<>();
 
     /**
      * TODO: Implement cache for the requests
@@ -198,7 +198,7 @@ public class surpriseMe extends FragmentActivity {
 
                 //turn jsonarray which represents businesses list into map of Business class
                 for (int i = 0; i < businessArray.length(); i++)
-                    insertBusiness((JSONObject) businessArray.get(i), i);
+                    insertBusiness((JSONObject) businessArray.get(i));
 
             } catch (JSONException e) {
                 Log.d(LOG_TAG, "Parse JSON Error");
@@ -212,9 +212,8 @@ public class surpriseMe extends FragmentActivity {
          * business class, then inserts into the hashmap
          *
          * @param obj   - the json object to be evaluated
-         * @param index - index of the object on the hashmap
          */
-        private void insertBusiness(JSONObject obj, int index) {
+        private void insertBusiness(JSONObject obj) {
             //get all categories from json
             List<String> categories = new ArrayList<>();
             try {
@@ -243,7 +242,7 @@ public class surpriseMe extends FragmentActivity {
                         obj.getDouble("distance"),
                         obj.getString("price")
                 );
-                bArray.append(index, business);
+                bArray.add(business);
                 Log.d(LOG_TAG, "Businesses Count: " + bArray.size());
             } catch (JSONException e) {
                 Log.d(LOG_TAG, "Insert business failed...");

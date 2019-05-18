@@ -1,8 +1,23 @@
 package com.example.android.letseat;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Business {
+public class Business implements Parcelable {
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Business createFromParcel(Parcel in) {
+            return new Business(in);
+        }
+
+        public Business[] newArray(int size) {
+            return new Business[size];
+        }
+    };
+
     private String name;
     private boolean isClosed;
     private String imageURL;
@@ -23,6 +38,38 @@ public class Business {
         this.phone = phone;
         this.distance = distance;
         this.price = price;
+    }
+
+    Business(Parcel source) {
+        this.name = source.readString();
+        this.isClosed = source.readByte() != 0;
+        this.imageURL = source.readString();
+        categories = new ArrayList<String>();
+        source.readList(categories, null);
+        this.rating = source.readInt();
+        this.displayAddress = source.readString();
+        this.phone = source.readString();
+        this.distance = source.readDouble();
+        this.price = source.readString();
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeByte((byte) (isClosed ? 1 : 0));
+        dest.writeString(imageURL);
+        dest.writeList(categories);
+        dest.writeInt(rating);
+        dest.writeString(displayAddress);
+        dest.writeString(phone);
+        dest.writeDouble(distance);
+        dest.writeString(price);
     }
 
     @Override
@@ -67,5 +114,6 @@ public class Business {
     public String getPrice() {
         return price;
     }
+
 
 }

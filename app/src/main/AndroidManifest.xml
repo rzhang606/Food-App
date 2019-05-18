@@ -38,6 +38,10 @@
         <activity
             android:name=".search"
             android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".BusinessListView"
+            android:label="@string/title_activity_business_list_view"
             android:theme="@style/AppTheme"></activity>
     </application>
 
