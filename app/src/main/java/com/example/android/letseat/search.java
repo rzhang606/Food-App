@@ -143,7 +143,6 @@ public class search extends AppCompatActivity {
     public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
 
         private FragmentManager fragmentManager = getSupportFragmentManager();
-        private BusinessDisplayFragment myFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
 
         @Override
         protected void onPreExecute() {
