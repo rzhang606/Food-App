@@ -33,12 +33,6 @@ public class BusinessListView extends AppCompatActivity {
 
         ListView myListView = findViewById(R.id.myListView);
 
-        ArrayList<String> businessNames = new ArrayList<String>();
-
-        for (int i = 0; i < bArray.size(); i++) {
-            businessNames.add(bArray.get(i).getName());
-        }
-
         //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, businessNames);
 
         BusinessAdapter arrayAdapter = new BusinessAdapter(this, R.layout.business_row, bArray);
@@ -48,6 +42,13 @@ public class BusinessListView extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("BUSINESS", bArray.get(position));
+
+                Intent intent = new Intent(BusinessListView.this, surpriseMe.class);
+                intent.putExtra("Bundle", bundle);
+
+                startActivity(intent);
 
             }
         });
