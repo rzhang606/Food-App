@@ -60,11 +60,11 @@ public class surpriseMe extends FragmentActivity {
 
         Intent intent = getIntent();
         int fromMain;
-        fromMain = intent.getIntExtra("FROM_MAIN", 0);
-        Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
+        fromMain = intent.getIntExtra("FROM_MAIN", 1);
 
         if(fromMain == 0){
             BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+            Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
             myFrag.Initialize(mBusiness);
         } else {
             getLocation();
