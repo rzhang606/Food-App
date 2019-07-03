@@ -38,8 +38,8 @@ public class BusinessAdapter extends ArrayAdapter<Business> {
         TextView name = v.findViewById(R.id.row_Name);
         name.setText(mBusiness.getName());
 
-        TextView distance = v.findViewById(R.id.row_Distance);
-        distance.setText("" + mBusiness.getDistance() + " Meters");
+        //TextView distance = v.findViewById(R.id.row_Distance);
+        //distance.setText("" + mBusiness.getDistance() + " Meters");
 
 
         return v;

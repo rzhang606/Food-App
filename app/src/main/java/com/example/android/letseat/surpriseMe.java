@@ -45,7 +45,7 @@ public class surpriseMe extends FragmentActivity {
     ArrayList<Business> bArray = new ArrayList<>();
 
     /**
-     * Bug - crashes on first install, only sees "allow to access device location?"
+     * Bug - crashes on first install, only sees "allow to access device location?" - FIXED
      */
 
     @Override
