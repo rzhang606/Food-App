@@ -12,6 +12,7 @@
         android:minHeight="20dip"
         android:maxHeight="20dip"
         android:layout_width="match_parent"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content" />
 
     <fragment

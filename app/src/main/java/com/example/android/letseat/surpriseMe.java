@@ -45,12 +45,7 @@ public class surpriseMe extends FragmentActivity {
     ArrayList<Business> bArray = new ArrayList<>();
 
     /**
-     * TODO: Implement cache for the requests
-     * TODO: Fix the ugly UI
-     * <p>
-     * Higher priority:
-     * TODO: get the pictures to display as well
-     * TODO: have the open maps feature work (ez)
+     * Bug - crashes on first install, only sees "allow to access device location?"
      */
 
     @Override
@@ -66,6 +61,8 @@ public class surpriseMe extends FragmentActivity {
             BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
             Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
             myFrag.Initialize(mBusiness);
+            ProgressBar mProgressBar = findViewById(R.id.sm_progressBar);
+            mProgressBar.setVisibility(View.INVISIBLE);
         } else {
             getLocation();
         }
@@ -132,6 +129,9 @@ public class surpriseMe extends FragmentActivity {
 
     }
 
+    /**
+     * Fetches Data, callback inflates the fragment
+     */
 
     public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
 
@@ -186,19 +186,27 @@ public class surpriseMe extends FragmentActivity {
                     .commit();
 
             //parses the raw string data and populates the sparsearray with business objects
-            parseJson(jsonResponse);
 
-            //randomly chooses a business to display
-            Random rand = new Random();
-            int myRand = rand.nextInt(20); //between 0-19
+            try{
+                parseJson(jsonResponse);
 
-            myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
-            myFrag.Initialize(bArray.get(myRand));
+                //randomly chooses a business to display
+                Random rand = new Random();
+                int myRand = rand.nextInt(20); //between 0-19
+
+                myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+                myFrag.Initialize(bArray.get(myRand));
+            } catch (Exception e){
+                e.printStackTrace();
+                Log.e(LOG_TAG, "ERROR: on post execute");
+            }
+
 
         }
 
         /**
          * Parse Json data into something useable
+         * calls insertBusiness();
          */
         private void parseJson(String rawData) {
             try {
@@ -237,7 +245,7 @@ public class surpriseMe extends FragmentActivity {
                 //location
                 JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
                 String location = jsonLocation.toString();
-                Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
+                //Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
 
 
                 //construct new business and put into the map
@@ -252,6 +260,7 @@ public class surpriseMe extends FragmentActivity {
                         obj.getDouble("distance"),
                         obj.getString("price")
                 );
+                Log.d(LOG_TAG, "PRICE: " + business.getPrice());
                 bArray.add(business);
                 Log.d(LOG_TAG, "Businesses Count: " + bArray.size());
             } catch (JSONException e) {

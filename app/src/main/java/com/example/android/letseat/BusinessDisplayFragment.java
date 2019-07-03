@@ -44,16 +44,28 @@ public class BusinessDisplayFragment extends Fragment {
 
             TextView name = (TextView) view.findViewById(R.id.b_frag_Name);
             name.setText(myBusiness.getName());
+            Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getName());
 
             TextView category = (TextView) view.findViewById(R.id.b_frag_Category);
             category.setText(myBusiness.getCategories().toString());
+            Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getCategories().toString());
+
 
             TextView rating = (TextView) view.findViewById(R.id.b_frag_Rating);
             rating.setText("(" + myBusiness.getRating() + "/5)");
+            Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getRating());
+
 
             TextView distance = (TextView) view.findViewById(R.id.b_frag_Distance);
             DecimalFormat dec = new DecimalFormat("#0.00");
             distance.setText(dec.format(myBusiness.getDistance()) + " meters");
+            Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getDistance());
+
+
+            TextView price = view.findViewById(R.id.b_frag_price);
+            price.setText("Price: " + myBusiness.getPrice());
+            Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getPrice());
+
         }
 
     }

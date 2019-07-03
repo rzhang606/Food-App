@@ -21,7 +21,7 @@
         <TextView
             style="@style/TextStyle"
             android:id="@+id/b_frag_Rating"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_columnWeight="1"
@@ -29,7 +29,8 @@
 
         <TextView
             style="@style/TextStyle"
-            android:layout_width="wrap_content"
+            android:id="@+id/b_frag_price"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_column="1"
             android:layout_columnWeight="1"
@@ -39,7 +40,7 @@
         <TextView
             style="@style/TextStyle"
             android:id="@+id/b_frag_Category"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_column="2"
             android:layout_columnWeight="1"
@@ -80,7 +81,9 @@
             android:layout_width="wrap_content"
             android:text="Find Another"
             android:layout_columnWeight="1"
+            android:onClick="findAnother"
             android:layout_column="2" />
+
 
     </GridLayout>
 
