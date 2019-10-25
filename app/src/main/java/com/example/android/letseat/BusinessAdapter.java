@@ -17,6 +17,10 @@ public class BusinessAdapter extends ArrayAdapter<Business> {
     private Context mContext;
     private ArrayList<Business> bArray = new ArrayList<Business>();
 
+    /**
+     * Adapts the list of business from API request into lisview -> businessListView
+     */
+
     public BusinessAdapter(Context context, int resource, ArrayList<Business> list) {
         super(context, resource, list);
         mContext = context;

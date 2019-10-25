@@ -54,16 +54,17 @@ public class surpriseMe extends FragmentActivity {
         setContentView(R.layout.activity_surprise_me);
 
         Intent intent = getIntent();
-        int fromMain;
-        fromMain = intent.getIntExtra("FROM_MAIN", 1);
+        int fromMain = intent.getIntExtra("FROM_MAIN", 1);
 
-        if(fromMain == 0){
+        if(fromMain == 0){ //create the fragment from the search page
             BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
             Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
             myFrag.Initialize(mBusiness);
             ProgressBar mProgressBar = findViewById(R.id.sm_progressBar);
             mProgressBar.setVisibility(View.INVISIBLE);
         } else {
+            //gets location and creates the fragment
+            //TODO: Separate the logic for creating fragment, so that getLocation only gets location, and then create fragment later
             getLocation();
         }
 
@@ -128,6 +129,7 @@ public class surpriseMe extends FragmentActivity {
         });
 
     }
+
 
     /**
      * Fetches Data, callback inflates the fragment
@@ -346,6 +348,4 @@ public class surpriseMe extends FragmentActivity {
             return output.toString();
         }
     }
-
-
 }

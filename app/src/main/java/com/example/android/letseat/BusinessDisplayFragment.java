@@ -15,7 +15,7 @@ import org.w3c.dom.Text;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple fragment subclass - displays more detailed info about each business
  */
 public class BusinessDisplayFragment extends Fragment {
 

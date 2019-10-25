@@ -21,7 +21,11 @@ public class BusinessListView extends AppCompatActivity {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
 
-    ArrayList<Business> bArray = new ArrayList<>();
+    private ArrayList<Business> bArray = new ArrayList<>();
+
+    /**
+     * Fetches data from source (search.java) and instantiates the adapter for the listview
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
