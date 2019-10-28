@@ -17,10 +17,10 @@
         android:id="@+id/myText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:text="Lets Eat"
-        android:textSize="40sp" />
+        android:textSize="60sp"
+        app:fontFamily="@font/rubik" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -28,21 +28,21 @@
         android:layout_below="@id/myText"
         android:layout_height="wrap_content">
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/buttonLeft"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:onClick="surpriseMeButton"
+            android:layout_marginStart="50dp"
             android:hint="Surprise Me" />
 
-        <Button
+        <android.support.design.button.MaterialButton
             android:id="@+id/buttonRight"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="searchButton"
-            android:hint="Search" />
+            android:layout_marginStart="50dp"
+            android:hint="Search"
+            android:onClick="searchButton" />
     </LinearLayout>
 
 </RelativeLayout>

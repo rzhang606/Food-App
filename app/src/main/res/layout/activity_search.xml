@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <Button
+    <android.support.design.button.MaterialButton
         android:id="@+id/searchButton"
-        android:text="Push Me"
+        android:hint="Push Me"
         android:layout_below="@+id/s_search"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"

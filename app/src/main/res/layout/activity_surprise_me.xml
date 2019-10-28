@@ -23,7 +23,6 @@
 
     <Button
         android:layout_below="@+id/sm_fragment"
-        android:gravity="bottom"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
