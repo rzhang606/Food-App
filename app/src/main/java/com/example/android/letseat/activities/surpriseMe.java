@@ -42,7 +42,6 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
 
     private Location myLocation;
     private ArrayList<Business> bArray = new ArrayList<>();
-    private Context mContext;
     private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
     BusinessDisplayFragment mFrag;
 
@@ -72,7 +71,6 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surprise_me);
-        mContext = this;
 
         Intent intent = getIntent();
         int fromMain = intent.getIntExtra("FROM_MAIN", 1);

@@ -7,12 +7,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.android.letseat.AsyncResponse;
 import com.example.android.letseat.Business;
+import com.example.android.letseat.fragments.BusinessDisplayFragment;
 import com.example.android.letseat.utility.FetchDataAsyncTask;
 import com.example.android.letseat.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -21,9 +24,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class search extends AppCompatActivity {
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class search extends AppCompatActivity implements AsyncResponse {
 
     /**
      * This activity should let the users more specifically choose what they want
@@ -33,12 +44,14 @@ public class search extends AppCompatActivity {
      * -
      */
 
-    private String LOG_TAG = search.class.getSimpleName();
+    private static String LOG_TAG = search.class.getSimpleName();
+    private static final int LOCATION_REQUEST_CODE = 1000;
+
 
     private ArrayList<Business> bArray = new ArrayList<Business>();
-
-    private static final int LOCATION_REQUEST_CODE = 1000;
     private Location myLocation;
+    private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
+    BusinessDisplayFragment mFrag;
 
     private View.OnClickListener searchListener = new View.OnClickListener() {
         @Override
@@ -56,6 +69,10 @@ public class search extends AppCompatActivity {
 
         myButton.setOnClickListener(searchListener);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
+
+        fetchDataTask.delegate = this;
         getLocation();
 
     }
@@ -69,6 +86,31 @@ public class search extends AppCompatActivity {
         startListActivity.putParcelableArrayListExtra("DATA", bArray);
 
         startActivity(startListActivity);
+    }
+
+    /**
+     * Interface Method
+     * @param output: json array of businesses
+     */
+    public void processResult(JSONArray output) {
+        //receives result of async of onPostExecute
+        Log.d(LOG_TAG, "OUTPUT: " + output.toString());
+
+        try{
+            //process JSONArray to usable arraylist
+            for(int i = 0; i < output.length(); i++){
+                insertBusiness((JSONObject)output.get(i));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: JSON Exception");
+            e.printStackTrace();
+        }
+
+        Random rand = new Random();
+        int myRand = rand.nextInt(20); //between 0-19
+
+        mFrag.Initialize(bArray.get(myRand));
+
     }
 
     @Override
@@ -113,12 +155,66 @@ public class search extends AppCompatActivity {
         task.addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
+                URL generalURL = null;
+                try {
+                    generalURL = new URL(getString(R.string.myLocationSearch) + "?latitude=" + myLocation.getLatitude() + "&longitude=" + myLocation.getLongitude());
+                    Log.d(LOG_TAG, "URL created: " + generalURL.toString());
+                } catch (NullPointerException e) {
+                    Log.d(LOG_TAG, "mylocation is null");
+                } catch (MalformedURLException e) {
+                    Log.d(LOG_TAG, "URL Malformed");
+                }
+
                 //get data from yelp api
-                FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
-                fetchDataTask.execute();
+                fetchDataTask.execute(generalURL);
             }
         });
 
     }
+
+    /**
+     * Takes a jsonobject representing a business and creates an instance of our
+     * business class, then inserts into the hashmap
+     *
+     * @param obj   - the json object to be evaluated
+     */
+    private void insertBusiness(JSONObject obj) {
+        //get all categories from json
+        List<String> categories = new ArrayList<>();
+        try {
+            //categories
+            JSONArray jsonCategories = obj.getJSONArray("categories");
+            for (int i = 0; i < jsonCategories.length(); i++) {
+                categories.add(jsonCategories.getJSONObject(i).getString("title"));
+            }
+
+            //location
+            JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
+            String location = jsonLocation.toString();
+            //Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
+
+
+            //construct new business and put into the map
+            Business business = new Business(
+                    obj.getString("name"),
+                    obj.getBoolean("is_closed"),
+                    obj.getString("image_url"),
+                    categories,
+                    obj.getInt("rating"),
+                    location,
+                    obj.getString("phone"),
+                    obj.getDouble("distance"),
+                    obj.getString("price")
+            );
+            Log.d(LOG_TAG, "PRICE: " + business.getPrice());
+            bArray.add(business);
+            Log.d(LOG_TAG, "Businesses Count: " + bArray.size());
+        } catch (JSONException e) {
+            Log.d(LOG_TAG, "Insert business failed...");
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
