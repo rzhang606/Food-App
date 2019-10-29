@@ -28,7 +28,7 @@ public class Business implements Parcelable {
     private double distance;
     private String price;
 
-    Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress, String phone, double distance, String price) {
+    public Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress, String phone, double distance, String price) {
         this.name = name;
         this.isClosed = isClosed;
         this.imageURL = imageURL;
@@ -40,7 +40,7 @@ public class Business implements Parcelable {
         this.price = price;
     }
 
-    Business(Parcel source) {
+    public Business(Parcel source) {
         this.name = source.readString();
         this.isClosed = source.readByte() != 0;
         this.imageURL = source.readString();
@@ -53,6 +53,7 @@ public class Business implements Parcelable {
         this.price = source.readString();
 
     }
+
 
     @Override
     public int describeContents() {

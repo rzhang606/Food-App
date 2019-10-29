@@ -10,26 +10,27 @@
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainMenu">
+        <activity android:name=".activities.mainMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".surpriseMe"
+            android:name=".activities.surpriseMe"
             android:label="@string/sm_name"
-            android:parentActivityName=".mainMenu" />
+            android:parentActivityName=".activities.mainMenu" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.android.letseat.mainMenu" />
+            android:value="com.example.android.letseat.activities.mainMenu" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -38,11 +39,11 @@
             android:value="-bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx" />
 
         <activity
-            android:name=".search"
+            android:name=".activities.search"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".BusinessListView"
+            android:name=".activities.BusinessListView"
             android:label="@string/title_activity_business_list_view"
             android:theme="@style/AppTheme"></activity>
     </application>
