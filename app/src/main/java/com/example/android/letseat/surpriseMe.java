@@ -1,6 +1,7 @@
 package com.example.android.letseat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -16,24 +18,55 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class surpriseMe extends FragmentActivity {
+public class surpriseMe extends FragmentActivity implements AsyncResponse {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 1000;
-    private Location myLocation;
 
-    //holds businesses objects
-    ArrayList<Business> bArray = new ArrayList<>();
+    private Location myLocation;
+    private ArrayList<Business> bArray = new ArrayList<>();
+    private Context mContext;
+    private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
+    BusinessDisplayFragment mFrag;
+
+    public void processResult(JSONArray output) {
+        //receives result of async of onPostExecute
+        Log.d(LOG_TAG, "OUTPUT: " + output.toString());
+
+        try{
+            //process JSONArray to usable arraylist
+            for(int i = 0; i < output.length(); i++){
+                insertBusiness((JSONObject)output.get(i));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "ERROR: JSON Exception");
+            e.printStackTrace();
+        }
+
+        Random rand = new Random();
+        int myRand = rand.nextInt(20); //between 0-19
+
+        mFrag.Initialize(bArray.get(myRand));
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surprise_me);
+        mContext = this;
 
         Intent intent = getIntent();
         int fromMain = intent.getIntExtra("FROM_MAIN", 1);
@@ -47,6 +80,10 @@ public class surpriseMe extends FragmentActivity {
         } else {
             //gets location and creates the fragment
             //TODO: Separate the logic for creating fragment, so that getLocation only gets location, and then create fragment later
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            mFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
+
+            fetchDataTask.delegate = this;
             getLocation();
         }
 
@@ -57,8 +94,9 @@ public class surpriseMe extends FragmentActivity {
         Random rand = new Random();
         int myRand = rand.nextInt(20); //between 0-19
 
-        BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
-        myFrag.Initialize(bArray.get(myRand));
+        mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+        try{ mFrag.Initialize(bArray.get(myRand)); }
+        catch (Exception e) { e.printStackTrace(); }
     }
 
 
@@ -116,10 +154,53 @@ public class surpriseMe extends FragmentActivity {
                 }
 
                 //get data from yelp api
-                FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
                 fetchDataTask.execute(generalURL);
             }
         });
+
+    }
+
+    /**
+     * Takes a jsonobject representing a business and creates an instance of our
+     * business class, then inserts into the hashmap
+     *
+     * @param obj   - the json object to be evaluated
+     */
+    private void insertBusiness(JSONObject obj) {
+        //get all categories from json
+        List<String> categories = new ArrayList<>();
+        try {
+            //categories
+            JSONArray jsonCategories = obj.getJSONArray("categories");
+            for (int i = 0; i < jsonCategories.length(); i++) {
+                categories.add(jsonCategories.getJSONObject(i).getString("title"));
+            }
+
+            //location
+            JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
+            String location = jsonLocation.toString();
+            //Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
+
+
+            //construct new business and put into the map
+            Business business = new Business(
+                    obj.getString("name"),
+                    obj.getBoolean("is_closed"),
+                    obj.getString("image_url"),
+                    categories,
+                    obj.getInt("rating"),
+                    location,
+                    obj.getString("phone"),
+                    obj.getDouble("distance"),
+                    obj.getString("price")
+            );
+            Log.d(LOG_TAG, "PRICE: " + business.getPrice());
+            bArray.add(business);
+            Log.d(LOG_TAG, "Businesses Count: " + bArray.size());
+        } catch (JSONException e) {
+            Log.d(LOG_TAG, "Insert business failed...");
+            e.printStackTrace();
+        }
 
     }
 }

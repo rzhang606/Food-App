@@ -18,9 +18,14 @@ import java.nio.charset.Charset;
  * Fetches Data from the yelp API
  */
 
-public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
+public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String>{
 
     private String LOG_TAG = FetchDataAsyncTask.class.getSimpleName();
+
+    /**
+     * Implement Interface
+     */
+    public AsyncResponse delegate;
 
 
     @Override
@@ -46,6 +51,11 @@ public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String> {
 
         try{
             JSONArray businessArray = parseJson(jsonResponse);
+            if (businessArray == null) {
+                Log.e(LOG_TAG, "ERROR: businessArray is null");
+            } else {
+                delegate.processResult(businessArray);
+            }
         } catch (Exception e){
             e.printStackTrace();
             Log.e(LOG_TAG, "ERROR: on post execute");
