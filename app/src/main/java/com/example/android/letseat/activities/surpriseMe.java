@@ -1,4 +1,4 @@
-package com.example.android.letseat;
+package com.example.android.letseat.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,6 +13,12 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.example.android.letseat.AsyncResponse;
+import com.example.android.letseat.Business;
+import com.example.android.letseat.fragments.BusinessDisplayFragment;
+import com.example.android.letseat.utility.FetchDataAsyncTask;
+import com.example.android.letseat.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;

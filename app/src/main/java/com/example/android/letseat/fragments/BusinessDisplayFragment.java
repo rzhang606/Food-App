@@ -1,4 +1,4 @@
-package com.example.android.letseat;
+package com.example.android.letseat.fragments;
 
 
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.android.letseat.Business;
+import com.example.android.letseat.R;
 
 import java.text.DecimalFormat;
 
