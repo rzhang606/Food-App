@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".surpriseMe">
+    tools:context=".activities.surpriseMe">
 
 
     <ProgressBar
@@ -16,14 +16,13 @@
         android:layout_height="wrap_content" />
 
     <fragment
-        class="com.example.android.letseat.BusinessDisplayFragment"
+        class="com.example.android.letseat.fragments.BusinessDisplayFragment"
         android:id="@+id/sm_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
         android:layout_below="@+id/sm_fragment"
-        android:gravity="bottom"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"

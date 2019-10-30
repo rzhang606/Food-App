@@ -1,4 +1,4 @@
-package com.example.android.letseat;
+package com.example.android.letseat.fragments;
 
 
 import android.os.Bundle;
@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.letseat.Business;
+import com.example.android.letseat.R;
+
 import java.text.DecimalFormat;
 
 import org.w3c.dom.Text;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * A simple fragment subclass - displays more detailed info about each business
  */
 public class BusinessDisplayFragment extends Fragment {
 

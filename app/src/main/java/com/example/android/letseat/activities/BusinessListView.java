@@ -1,19 +1,15 @@
-package com.example.android.letseat;
+package com.example.android.letseat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.android.letseat.Business;
+import com.example.android.letseat.utility.BusinessAdapter;
+import com.example.android.letseat.R;
 
 import java.util.ArrayList;
 
@@ -21,7 +17,11 @@ public class BusinessListView extends AppCompatActivity {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
 
-    ArrayList<Business> bArray = new ArrayList<>();
+    private ArrayList<Business> bArray = new ArrayList<>();
+
+    /**
+     * Fetches data from source (search.java) and instantiates the adapter for the listview
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
