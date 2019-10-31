@@ -13,3 +13,9 @@ App designed to help users decide on where to eat!
 - performance tweaking
 - fixing the strings (lots of non-res defined strings)
 - add checks to make sure google services is active and location works, otherwise, throw up a toast to let users know
+
+# Project Tags:
+
+Custom Tags:
+ - backend: refers to changes that do not affect how the app looks
+ - user interface: mostly UI changes, not logic based
