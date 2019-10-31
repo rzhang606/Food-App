@@ -66,7 +66,6 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
 
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
