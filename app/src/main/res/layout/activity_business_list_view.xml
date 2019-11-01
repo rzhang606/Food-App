@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/primary_light"
+        android:background="@color/primary"
         android:padding="5dp">
 
         <EditText
@@ -23,7 +23,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Filters" />
+            android:hint="Filters:" />
 
     </LinearLayout>
 
@@ -42,13 +42,14 @@
             android:clickable="true"
             android:elevation="4dp"
             android:padding="5dp"
-            android:background="@color/primary_dark">
+            android:background="@drawable/shapes">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="0 Items" />
+                android:textSize="20dp"
+                android:text="Stores Found" />
 
             <ImageView
                 android:layout_width="50dp"

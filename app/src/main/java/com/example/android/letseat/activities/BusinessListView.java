@@ -44,8 +44,8 @@ public class BusinessListView extends AppCompatActivity {
 
         ListView myListView = findViewById(R.id.myListView);
 
+        //Adapter for each row
         BusinessAdapter arrayAdapter = new BusinessAdapter(this, R.layout.business_row, bArray);
-
         myListView.setAdapter(arrayAdapter);
 
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,7 +59,6 @@ public class BusinessListView extends AppCompatActivity {
                 intent.putExtra("FROM_MAIN", 0);
 
                 startActivity(intent);
-
             }
         });
 
