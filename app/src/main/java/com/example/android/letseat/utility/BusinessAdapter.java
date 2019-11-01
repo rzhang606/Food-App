@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -110,8 +112,16 @@ public class BusinessAdapter extends ArrayAdapter<Business> {
         TextView name = v.findViewById(R.id.row_Name);
         name.setText(mBusiness.getName());
 
-        //TextView distance = v.findViewById(R.id.row_Distance);
-        //distance.setText("" + mBusiness.getDistance() + " Meters");
+        TextView price = v.findViewById(R.id.row_Price);
+        price.setText(mBusiness.getPrice());
+
+        TextView distance = v.findViewById(R.id.row_Distance);
+        int mdistance = (int)java.lang.Math.floor(mBusiness.getDistance() - mBusiness.getDistance()%100);
+        if(mdistance < 100) {
+            distance.setText(" <100 M");
+        } else {
+            distance.setText(mdistance + " M");
+        }
 
 
         return v;
