@@ -10,6 +10,6 @@
     <string name="apikey">Bearer -bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx</string>
     <string name="title_activity_search">search</string>
     <string name="title_activity_business_list_view">BusinessListView</string>
-    <string name="iconCredits">[Made by Freepik, photo3idea_studio, adib sulthon, smashicons, Darius Dan, mynamepong on flatiron.com]</string>
+    <string name="iconCredits">Made by Freepik, photo3idea_studio, adib sulthon, smashicons, Darius Dan, mynamepong, Monkik on flatiron.com</string>
 
 </resources>
