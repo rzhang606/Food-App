@@ -2,7 +2,7 @@ package com.example.android.letseat.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +13,6 @@ import com.example.android.letseat.Business;
 import com.example.android.letseat.R;
 
 import java.text.DecimalFormat;
-
-import org.w3c.dom.Text;
 
 
 /**

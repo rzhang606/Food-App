@@ -5,42 +5,63 @@
 
     <ImageView
         android:id="@+id/row_Icon"
-        android:layout_width="wrap_content"
+        android:layout_alignParentStart="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/googleg_standard_color_18" />
+        app:srcCompat="@drawable/burger" />
 
     <RelativeLayout
         android:id="@+id/listRowContent"
-        android:paddingStart="16dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_toEndOf="@+id/row_Icon"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/listRowHeight">
 
-        <TextView
-            android:id="@+id/row_Name"
-
-            android:paddingLeft="10dp"
+        <LinearLayout
+            android:id="@+id/row_TitleRow"
+            android:paddingStart="10dp"
+            android:paddingEnd="5dp"
             android:paddingTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/row_Name"
 
-            android:textSize="20dp"
-            android:text="Coco's Bubble Tea"
+                android:textSize="20sp"
+                android:text="Coco's Bubble Tea"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/row_Price"
+                android:text="$$$"
+                android:paddingStart="5dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/row_Distance"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/row_Name"
+            android:layout_below="@+id/row_TitleRow"
 
-            android:padding="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
 
-            android:text="200 meters away" />
+            android:text="200 M" />
     </RelativeLayout>
 
 </RelativeLayout>

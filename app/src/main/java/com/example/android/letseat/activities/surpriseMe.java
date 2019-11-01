@@ -1,15 +1,14 @@
 package com.example.android.letseat.activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -65,7 +64,6 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
         mFrag.Initialize(bArray.get(myRand));
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
