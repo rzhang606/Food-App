@@ -1,8 +1,6 @@
 package com.example.android.letseat.utility;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +85,7 @@ public class BusinessAdapter extends ArrayAdapter<Business> {
     }
 
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup group){
+    public View getView(int position, View convertView, ViewGroup group){
 
         View v = convertView;
 
