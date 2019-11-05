@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.utility.BusinessAdapter;
 import com.example.android.letseat.R;
 
 import java.util.ArrayList;
 
-public class BusinessListView extends AppCompatActivity {
+public class BusinessListView extends BottomNavigationActivity {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
 
@@ -27,6 +28,7 @@ public class BusinessListView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list_view);
+        super.setNavigationListener();
 
         Intent intent = getIntent();
         bArray = intent.getParcelableArrayListExtra("DATA");
