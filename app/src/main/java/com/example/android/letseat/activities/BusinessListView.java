@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.LockedBottomSheetBehavior;
 import com.example.android.letseat.utility.BusinessAdapter;
@@ -23,7 +24,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 
-public class BusinessListView extends AppCompatActivity {
+public class BusinessListView extends BottomNavigationActivity {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
     BottomSheetBehavior sheetBehavior;
@@ -38,6 +39,7 @@ public class BusinessListView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list_view);
+        super.setNavigationListener();
 
         Intent intent = getIntent();
         bArray = intent.getParcelableArrayListExtra("DATA");
