@@ -62,7 +62,7 @@ public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String>{
             }
         } catch (Exception e){
             e.printStackTrace();
-            Log.e(LOG_TAG, "ERROR: on post execute");
+            Log.e(LOG_TAG, "ERROR: on post execute: " + e.toString());
         }
 
 

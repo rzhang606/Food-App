@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.android.letseat.AsyncResponse;
+import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.fragments.BusinessDisplayFragment;
 import com.example.android.letseat.utility.FetchDataAsyncTask;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class search extends AppCompatActivity implements AsyncResponse {
+public class search extends BottomNavigationActivity implements AsyncResponse {
 
     /**
      * This activity should let the users more specifically choose what they want
@@ -51,7 +52,6 @@ public class search extends AppCompatActivity implements AsyncResponse {
     private ArrayList<Business> bArray = new ArrayList<Business>();
     private Location myLocation;
     private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
-    BusinessDisplayFragment mFrag;
 
     private View.OnClickListener searchListener = new View.OnClickListener() {
         @Override
@@ -64,13 +64,13 @@ public class search extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        super.setNavigationListener();
 
         Button myButton = findViewById(R.id.searchButton);
 
         myButton.setOnClickListener(searchListener);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
 
         fetchDataTask.delegate = this;
         getLocation();
@@ -105,11 +105,6 @@ public class search extends AppCompatActivity implements AsyncResponse {
             Log.e(LOG_TAG, "ERROR: JSON Exception");
             e.printStackTrace();
         }
-
-        Random rand = new Random();
-        int myRand = rand.nextInt(20); //between 0-19
-
-        mFrag.Initialize(bArray.get(myRand));
 
     }
 
