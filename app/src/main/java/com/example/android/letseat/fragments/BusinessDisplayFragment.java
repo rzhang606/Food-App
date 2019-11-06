@@ -48,12 +48,13 @@ public class BusinessDisplayFragment extends Fragment {
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getName());
 
             TextView category = (TextView) view.findViewById(R.id.b_frag_Category);
-            category.setText(myBusiness.getCategories().toString());
+            String categories = myBusiness.getCategories().toString();
+            category.setText("Categories: " + categories.substring(1, categories.length()-1));
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getCategories().toString());
 
 
             TextView rating = (TextView) view.findViewById(R.id.b_frag_Rating);
-            rating.setText("(" + myBusiness.getRating() + "/5)");
+            rating.setText("Rating: " + myBusiness.getRating() + "/5");
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getRating());
 
 
