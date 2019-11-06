@@ -73,20 +73,38 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
         Intent intent = getIntent();
         int fromMain = intent.getIntExtra("FROM_MAIN", 1);
 
+        mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
         if(fromMain == 0){ //create the fragment from the search page
-            BusinessDisplayFragment myFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
             Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
-            myFrag.Initialize(mBusiness);
+            mFrag.Initialize(mBusiness);
             ProgressBar mProgressBar = findViewById(R.id.sm_progressBar);
             mProgressBar.setVisibility(View.INVISIBLE);
         } else {
             //gets location and creates the fragment
-            //TODO: Separate the logic for creating fragment, so that getLocation only gets location, and then create fragment later
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            mFrag = (BusinessDisplayFragment) fragmentManager.findFragmentById(R.id.sm_fragment);
-
             fetchDataTask.delegate = this;
-            getLocation();
+            Task<Location> task = getLocation();
+
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        myLocation = location;
+                        try {
+                            URL generalURL = new URL(getString(R.string.myLocationSearch) + "?latitude=" + myLocation.getLatitude() + "&longitude=" + myLocation.getLongitude());
+                            Log.d(LOG_TAG, "URL created: " + generalURL.toString());
+
+                            //get data from yelp api
+                            fetchDataTask.execute(generalURL);
+                        } catch (MalformedURLException e) {
+                            Log.d(LOG_TAG, "URL Malformed");
+                        }
+
+                    } else {
+                        Log.d(LOG_TAG, "Location finding error: NULL retrieved");
+                    }
+                }
+            });
+
         }
 
     }
@@ -116,9 +134,8 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
 
     /**
      * Retrieves Location and stores in myLocation variable
-     * Once location is retrieved, fires off the Async Task for API call
      */
-    private void getLocation() {
+    private Task<Location> getLocation() {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
@@ -129,36 +146,7 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
         FusedLocationProviderClient myFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         Task<Location> task = myFusedLocationClient.getLastLocation();
 
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    myLocation = location;
-                    Log.d(LOG_TAG, "My location is " + myLocation.toString());
-                } else {
-                    Log.d(LOG_TAG, "Location finding error: NULL retrieved");
-                }
-            }
-        });
-
-        task.addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                //Create URL
-                URL generalURL = null;
-                try {
-                    generalURL = new URL(getString(R.string.myLocationSearch) + "?latitude=" + myLocation.getLatitude() + "&longitude=" + myLocation.getLongitude());
-                    Log.d(LOG_TAG, "URL created: " + generalURL.toString());
-                } catch (NullPointerException e) {
-                    Log.d(LOG_TAG, "mylocation is null");
-                } catch (MalformedURLException e) {
-                    Log.d(LOG_TAG, "URL Malformed");
-                }
-
-                //get data from yelp api
-                fetchDataTask.execute(generalURL);
-            }
-        });
+        return task;
 
     }
 
