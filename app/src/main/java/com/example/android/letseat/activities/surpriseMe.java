@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.android.letseat.AsyncResponse;
+import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.fragments.BusinessDisplayFragment;
 import com.example.android.letseat.utility.FetchDataAsyncTask;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class surpriseMe extends FragmentActivity implements AsyncResponse {
+public class surpriseMe extends BottomNavigationActivity implements AsyncResponse {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
     private static final int LOCATION_REQUEST_CODE = 1000;
@@ -69,6 +70,7 @@ public class surpriseMe extends FragmentActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_surprise_me);
+        super.setNavigationListener();
 
         Intent intent = getIntent();
         int fromMain = intent.getIntExtra("FROM_MAIN", 1);

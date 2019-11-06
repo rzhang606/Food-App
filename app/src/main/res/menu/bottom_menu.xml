@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/surprise_option"
+        android:title="Surprise"
+        android:icon="@drawable/bagel"/>
+    <item
+        android:id="@+id/search_option"
+        android:title="Search"
+        android:icon="@drawable/boba" />
+    <item
+        android:id="@+id/settings_option"
+        android:title="Settings"
+        android:icon="@drawable/candy"/>
+</menu>
