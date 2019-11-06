@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.fragment.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.android.letseat.AsyncResponse;
@@ -72,6 +73,9 @@ public class surpriseMe extends BottomNavigationActivity implements AsyncRespons
         setContentView(R.layout.activity_surprise_me);
         super.setNavigationListener();
 
+        Button button = (Button)findViewById(R.id.b_frag_another);
+        findAnotherListener(button);
+
         Intent intent = getIntent();
         int fromMain = intent.getIntExtra("FROM_MAIN", 1);
 
@@ -111,14 +115,19 @@ public class surpriseMe extends BottomNavigationActivity implements AsyncRespons
 
     }
 
-    public void findAnother(View view) {
+    public void findAnotherListener(Button button) {
 
-        Random rand = new Random();
-        int myRand = rand.nextInt(20); //between 0-19
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Random rand = new Random();
+                int myRand = rand.nextInt(20); //between 0-19
 
-        mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
-        try{ mFrag.Initialize(bArray.get(myRand)); }
-        catch (Exception e) { e.printStackTrace(); }
+                mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
+                try{ mFrag.Initialize(bArray.get(myRand)); }
+                catch (Exception e) { e.printStackTrace(); }
+            }
+        });
     }
 
 
