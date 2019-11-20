@@ -42,7 +42,6 @@ public class search extends BottomNavigationActivity implements AsyncResponse {
      * - provide filters to search for certain categories of food,
      * - allow certain types of food to not appear (ie, no mexican food)
      * - search for restaurant names
-     * -
      */
 
     private static String LOG_TAG = search.class.getSimpleName();
