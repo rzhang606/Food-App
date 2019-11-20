@@ -3,6 +3,7 @@ package com.example.android.letseat.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.android.letseat.App;
@@ -16,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,14 +29,15 @@ public class FetchAPIData implements AsyncResponse {
     private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
     private ArrayList<Business> bArray = new ArrayList<>();
 
-    private Context context;
-    private Activity activity;
+    private WeakReference<Context> weak_context;
+    private WeakReference<Activity> weak_activity;
 
     public FetchAPIData(Context context, Activity activity) {
-        this.context = context;
-        this.activity = activity;
+        this.weak_context = new WeakReference<>(context);
+        this.weak_activity = new WeakReference<>(activity);
         fetchDataTask.delegate = this;
     }
+
 
     public ArrayList<Business> getData() {
         return bArray;
@@ -47,6 +50,9 @@ public class FetchAPIData implements AsyncResponse {
      * then, getData retrieves it to whatever activity called this
      */
     public void search(String searchWord) {
+        Context context = weak_context.get();
+        Activity activity = weak_activity.get();
+
         FetchLocation location = new FetchLocation(context, activity);
         Task<Location> locationTask = location.getLocation();
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
@@ -132,5 +138,4 @@ public class FetchAPIData implements AsyncResponse {
         return null;
 
     }
-
 }
