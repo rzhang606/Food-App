@@ -48,7 +48,7 @@ public class FetchAPIData implements AsyncResponse {
      * processResult is called upon retrieving the JSON, and it formats the data
      * then, getData retrieves it to whatever activity called this
      */
-    public void search(String searchWord) {
+    public void search(final String searchWord) {
         Context context = weak_context.get();
         Activity activity = weak_activity.get();
 
@@ -59,7 +59,9 @@ public class FetchAPIData implements AsyncResponse {
             public void onSuccess(Location location) {
                 if (location != null) {
                     try {
-                        URL generalURL = new URL(App.getContext().getString(R.string.myLocationSearch) + "?latitude=" + location.getLatitude() + "&longitude=" + location.getLongitude());
+                        URL generalURL = new URL(App.getContext().getString(R.string.myLocationSearch) +
+                                "?latitude=" + location.getLatitude() + "&longitude=" + location.getLongitude()
+                                + "&term=" + searchWord);
                         Log.d(LOG_TAG, "URL created: " + generalURL.toString());
 
                         //get data from yelp api
