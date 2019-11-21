@@ -7,12 +7,11 @@ App designed to help users decide on where to eat!
 - searching creates a list of possible locations, and clicking on them opens up more details
 
 # TODO:
-- manual search (by category, etc?)
 - UI upgrades/fixes
 - link indexing (https://developer.android.com/studio/write/app-link-indexing)
 - performance tweaking
 - fixing the strings (lots of non-res defined strings)
-- add checks to make sure google services is active and location works, otherwise, throw up a toast to let users know
+- testing
 
 # Project Tags:
 
