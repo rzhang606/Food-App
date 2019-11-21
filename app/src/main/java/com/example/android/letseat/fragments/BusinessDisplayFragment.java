@@ -56,7 +56,9 @@ public class BusinessDisplayFragment extends Fragment {
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getCategories().toString());
 
             ImageView image = (ImageView) view.findViewById(R.id.b_image);
-            Picasso.get().load(myBusiness.getImageURL()).into(image);
+            if(myBusiness.getImageURL() != null && !myBusiness.getImageURL().equals("")) {
+                Picasso.get().load(myBusiness.getImageURL()).into(image);
+            }
 
             TextView rating = (TextView) view.findViewById(R.id.b_frag_Rating);
             rating.setText("Rating: " + myBusiness.getRating() + "/5");
