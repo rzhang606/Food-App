@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import com.example.android.letseat.APIDataResponse;
 import com.example.android.letseat.AsyncResponse;
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
@@ -37,13 +38,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class surpriseMe extends BottomNavigationActivity{
+public class surpriseMe extends BottomNavigationActivity implements APIDataResponse {
 
     private static final String LOG_TAG = surpriseMe.class.getSimpleName();
 
     private ArrayList<Business> bArray = new ArrayList<>();
     BusinessDisplayFragment mFrag;
 
+    FetchAPIData apiDataFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class surpriseMe extends BottomNavigationActivity{
         setContentView(R.layout.activity_surprise_me);
         super.setNavigationListener();
 
-        Button button = (Button)findViewById(R.id.b_frag_another);
+        Button button = (Button) findViewById(R.id.b_frag_another);
         findAnotherListener(button);
 
         Intent intent = getIntent();
@@ -59,21 +61,15 @@ public class surpriseMe extends BottomNavigationActivity{
 
         mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
 
-        if(fromMain == 0){ //create the fragment from the search page
+        if (fromMain == 0) { //create the fragment from the search page
             Business mBusiness = intent.getBundleExtra("Bundle").getParcelable("BUSINESS");
             mFrag.Initialize(mBusiness);
             ProgressBar mProgressBar = findViewById(R.id.sm_progressBar);
             mProgressBar.setVisibility(View.INVISIBLE);
         } else {
-            FetchAPIData apiDataFetcher = new FetchAPIData(this, this);
+            apiDataFetcher = new FetchAPIData(this, this);
+            apiDataFetcher.apiDelegate = this;
             apiDataFetcher.search("");
-            bArray = apiDataFetcher.getData();
-
-            //Initialize Fragment
-            Random rand = new Random();
-            int myRand = rand.nextInt(20); //0-19
-            //mFrag.Initialize(bArray.get(myRand));
-
         }
 
     }
@@ -87,10 +83,21 @@ public class surpriseMe extends BottomNavigationActivity{
                 int myRand = rand.nextInt(20); //between 0-19
 
                 mFrag = (BusinessDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.sm_fragment);
-                try{ mFrag.Initialize(bArray.get(myRand)); }
-                catch (Exception e) { e.printStackTrace(); }
+                try {
+                    mFrag.Initialize(bArray.get(myRand));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
+    @Override
+    public void apiResponse(ArrayList<Business> bArr) {
+        bArray = bArr;
+
+        Random rand = new Random();
+        int myRand = rand.nextInt(20);
+        mFrag.Initialize(bArr.get(myRand));
+    }
 }

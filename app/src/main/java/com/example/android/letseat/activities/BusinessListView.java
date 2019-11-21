@@ -1,11 +1,8 @@
 package com.example.android.letseat.activities;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.util.Log;
@@ -17,13 +14,11 @@ import android.widget.ListView;
 
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
-import com.example.android.letseat.LockedBottomSheetBehavior;
 import com.example.android.letseat.utility.BusinessAdapter;
 import com.example.android.letseat.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Lock;
 
 public class BusinessListView extends BottomNavigationActivity {
 
@@ -45,10 +40,8 @@ public class BusinessListView extends BottomNavigationActivity {
         super.setNavigationListener(); // sets bottom nav bar
 
         //Grab values from the search results
-
         Intent intent = getIntent();
         bArray = intent.getParcelableArrayListExtra("DATA");
-
 
         myListView = findViewById(R.id.myListView);
         //Set adapter for the list

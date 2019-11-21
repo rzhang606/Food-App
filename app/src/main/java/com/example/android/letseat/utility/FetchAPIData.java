@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.android.letseat.APIDataResponse;
 import com.example.android.letseat.App;
 import com.example.android.letseat.AsyncResponse;
 import com.example.android.letseat.Business;
@@ -18,8 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.BufferOverflowException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +30,16 @@ public class FetchAPIData implements AsyncResponse {
 
     private final String LOG_TAG = FetchAPIData.class.getSimpleName();
     private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
-    private ArrayList<Business> bArray = new ArrayList<>();
 
     private WeakReference<Context> weak_context;
     private WeakReference<Activity> weak_activity;
+
+    public APIDataResponse apiDelegate;
 
     public FetchAPIData(Context context, Activity activity) {
         this.weak_context = new WeakReference<>(context);
         this.weak_activity = new WeakReference<>(activity);
         fetchDataTask.delegate = this;
-    }
-
-
-    public ArrayList<Business> getData() {
-        return bArray;
     }
 
     /**
@@ -80,13 +79,19 @@ public class FetchAPIData implements AsyncResponse {
         //receives result of async of onPostExecute
         Log.d(LOG_TAG, "OUTPUT: " + output.toString());
 
+        ArrayList<Business> bArr = new ArrayList<>();
+
         try{
             //process JSONArray to usable arraylist
             for(int i = 0; i < output.length(); i++){
-                bArray.add(insertBusiness((JSONObject)output.get(i)));
+                Business bus = convertBusiness((JSONObject)output.get(i));
+                if(bus != null) {
+                    bArr.add(bus);
+                }
             }
 
-            Log.d(LOG_TAG, bArray.toString());
+            Log.d(LOG_TAG, bArr.toString());
+            apiDelegate.apiResponse(bArr);
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "ERROR: JSON Exception");
@@ -100,7 +105,7 @@ public class FetchAPIData implements AsyncResponse {
      *
      * @param obj   - the json object to be evaluated
      */
-    private Business insertBusiness(JSONObject obj) {
+    private Business convertBusiness(JSONObject obj) {
         //get all categories from json
         List<String> categories = new ArrayList<>();
         try {
@@ -113,7 +118,6 @@ public class FetchAPIData implements AsyncResponse {
             //location
             JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
             String location = jsonLocation.toString();
-            //Log.d(LOG_TAG, "NAME OF LOCATION: " + location);
 
             //construct new business and put into the map
             Business business = new Business(
