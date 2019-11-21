@@ -19,7 +19,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 
 /**
- * Fetches Data from the yelp API
+ * Fetches Data from the yelp API based on URL
  */
 
 public class FetchDataAsyncTask extends AsyncTask<URL, Integer, String>{

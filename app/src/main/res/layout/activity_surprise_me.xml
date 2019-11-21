@@ -25,15 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_business_display" />
-
-        <Button
-            android:layout_below="@+id/sm_fragment"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:text="Find Another"
-            android:onClick="findAnother"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

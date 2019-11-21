@@ -1,16 +1,19 @@
 package com.example.android.letseat.fragments;
 
 
+import android.media.Image;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.letseat.Business;
 import com.example.android.letseat.R;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 
@@ -52,6 +55,10 @@ public class BusinessDisplayFragment extends Fragment {
             category.setText("Categories: " + categories.substring(1, categories.length()-1));
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getCategories().toString());
 
+            ImageView image = (ImageView) view.findViewById(R.id.b_image);
+            if(myBusiness.getImageURL() != null && !myBusiness.getImageURL().equals("")) {
+                Picasso.get().load(myBusiness.getImageURL()).into(image);
+            }
 
             TextView rating = (TextView) view.findViewById(R.id.b_frag_Rating);
             rating.setText("Rating: " + myBusiness.getRating() + "/5");
