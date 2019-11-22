@@ -11,5 +11,10 @@
     <string name="title_activity_search">search</string>
     <string name="title_activity_business_list_view">BusinessListView</string>
     <string name="iconCredits">Made by Freepik, photo3idea_studio, adib sulthon, smashicons, Darius Dan, mynamepong, Monkik on flatiron.com</string>
+    <string-array name="sort_options">
+        <item>Sort by:</item>
+        <item>Distance</item>
+        <item>Price</item>
+    </string-array>
 
 </resources>

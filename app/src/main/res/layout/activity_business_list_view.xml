@@ -17,13 +17,14 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60sp"
             android:hint="Search:" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/list_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Filters:" />
+            android:layout_height="60sp"
+            android:entries="@array/sort_options" />
 
     </LinearLayout>
 
