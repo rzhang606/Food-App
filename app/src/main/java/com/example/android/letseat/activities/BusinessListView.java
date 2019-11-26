@@ -1,5 +1,6 @@
 package com.example.android.letseat.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,6 +34,8 @@ public class BusinessListView extends BottomNavigationActivity {
     Spinner spinner;
     int currentSpinnerItem = 0;
     ListView myListView;
+    EditText searchQuery;
+    Button searchButton;
     ArrayList<Business> bArray = new ArrayList<>();
 
 
@@ -60,6 +65,10 @@ public class BusinessListView extends BottomNavigationActivity {
         spinner = findViewById(R.id.list_spinner);
         setUpSpinner(spinner);
 
+        //Set up search
+        searchQuery = findViewById(R.id.list_search_query);
+        searchButton = findViewById(R.id.list_search_button);
+        setUpSearch(this, searchQuery, searchButton);
 
 
     }
@@ -130,11 +139,26 @@ public class BusinessListView extends BottomNavigationActivity {
                     bArray = sortList(bArray, "price");
                 }
                 setUpList();
+                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+    }
+
+    private void setUpSearch(final Context context, final EditText sQuery, Button sButton) {
+        sButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query = sQuery.getText().toString();
+                //search
+                Intent searchIntent = new Intent(context, search.class);
+                searchIntent.putExtra("List", query);
+                startActivity(searchIntent);
             }
         });
     }

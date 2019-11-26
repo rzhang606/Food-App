@@ -15,16 +15,34 @@
         android:background="@color/primary"
         android:padding="5dp">
 
-        <EditText
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60sp"
-            android:hint="Search:" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/list_search_query"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="60sp"
+                android:hint="Search:" />
+
+            <Button
+                android:id="@+id/list_search_button"
+                android:hint="Go"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
 
         <Spinner
             android:id="@+id/list_spinner"
             android:layout_width="match_parent"
             android:layout_height="60sp"
             android:entries="@array/sort_options" />
+
+
 
     </LinearLayout>
 

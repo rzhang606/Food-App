@@ -30,6 +30,7 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
 
     ProgressBar progressBar;
     Button searchButton;
+    SearchView searchView;
 
     @Override
     protected void onStop() {
@@ -42,7 +43,7 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
     private View.OnClickListener searchListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            executeSearch();
+            executeSearch(searchView.getQuery().toString());
         }
     };
 
@@ -58,27 +59,33 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(searchListener);
         progressBar = findViewById(R.id.s_progressBar);
-        //
+        searchView = findViewById(R.id.s_search);
 
+        //
         apiDataFetcher = new FetchAPIData(this, this);
         apiDataFetcher.apiDelegate = this;
+
+        //Check for redirection from list search
+        Intent intent = getIntent();
+        String listExtra = intent.getStringExtra("List");
+        if(listExtra != null) {
+            executeSearch(listExtra);
+        }
     }
 
     /**
      * Button Execution to search
      */
-    private void executeSearch() {
-        SearchView searchView = findViewById(R.id.s_search);
-        String searchWords = searchView.getQuery().toString();
+    private void executeSearch(String searchQuery) {
 
-        Log.d(LOG_TAG, "Words: " + searchWords);
+        Log.d(LOG_TAG, "Words: " + searchQuery);
 
         progressBar.setVisibility(View.VISIBLE);
         searchView.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
 
 
-        apiDataFetcher.search(searchWords);
+        apiDataFetcher.search(searchQuery);
     }
 
     /**
