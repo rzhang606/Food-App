@@ -1,4 +1,4 @@
-package com.example.android.letseat;
+package com.example.android.letseat.interfaces;
 
 import org.json.JSONArray;
 

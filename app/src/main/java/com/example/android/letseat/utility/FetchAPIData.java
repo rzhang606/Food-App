@@ -3,12 +3,11 @@ package com.example.android.letseat.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.android.letseat.APIDataResponse;
+import com.example.android.letseat.interfaces.APIDataResponse;
 import com.example.android.letseat.App;
-import com.example.android.letseat.AsyncResponse;
+import com.example.android.letseat.interfaces.AsyncResponse;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.R;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,10 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.BufferOverflowException;
 import java.util.ArrayList;
 import java.util.List;
 

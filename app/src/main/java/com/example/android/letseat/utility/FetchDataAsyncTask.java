@@ -3,7 +3,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.android.letseat.App;
-import com.example.android.letseat.AsyncResponse;
+import com.example.android.letseat.interfaces.AsyncResponse;
 import com.example.android.letseat.R;
 
 import org.json.JSONArray;

@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 
-import com.example.android.letseat.APIDataResponse;
+import com.example.android.letseat.interfaces.APIDataResponse;
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.utility.FetchAPIData;

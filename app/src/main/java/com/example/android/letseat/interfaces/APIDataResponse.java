@@ -1,4 +1,6 @@
-package com.example.android.letseat;
+package com.example.android.letseat.interfaces;
+
+import com.example.android.letseat.Business;
 
 import java.util.ArrayList;
 

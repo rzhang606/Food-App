@@ -13,6 +13,9 @@ import com.example.android.letseat.activities.surpriseMe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BottomNavigationActivity extends AppCompatActivity {
+    /**
+     * Parent activity for all activities with the bottom nav bar
+     */
 
     BottomNavigationView bottomNavigationView;
     Context mcontext;
