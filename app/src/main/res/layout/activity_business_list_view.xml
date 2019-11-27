@@ -1,85 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/list_coordinator_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.BusinessListView"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Interface sitting behind the backdrop and shown when collapsed-->
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/list_coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/primary"
-        android:padding="5dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:context=".activities.BusinessListView">
 
+        <!-- Interface sitting behind the backdrop and shown when collapsed-->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/list_search_query"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="60sp"
-                android:hint="Search:" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/primary"
+            android:padding="5dp">
 
-            <Button
-                android:id="@+id/list_search_button"
-                android:hint="Go"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/list_search_query"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="60sp"
+                    android:hint="Search:" />
+
+                <Button
+                    android:id="@+id/list_search_button"
+                    android:hint="Go"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/list_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:entries="@array/sort_options" />
 
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/list_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="60sp"
-            android:entries="@array/sort_options" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/list_content_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:behavior_peekHeight="56dp"
-        app:layout_behavior=".LockedBottomSheetBehavior">
-
         <LinearLayout
+            android:id="@+id/list_content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:padding="5dp"
-            android:background="@drawable/shapes">
+            android:orientation="vertical"
+            app:behavior_peekHeight="56dp"
+            app:layout_behavior=".LockedBottomSheetBehavior">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="20dp"
-                android:text="Stores Found" />
+                android:orientation="horizontal"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:padding="5dp"
+                android:background="@drawable/shapes">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/filterIcon"
-                android:src="@drawable/ic_launcher_foreground"
-                android:layout_gravity="end"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20dp"
+                    android:text="Stores Found" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/filterIcon"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/myListView"
+                android:background="@color/cardview_light_background"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/myListView"
-            android:background="@color/cardview_light_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -91,5 +101,7 @@
         app:itemTextColor="@color/primary_text"
         app:menu="@menu/bottom_menu"/>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
+
+
 
