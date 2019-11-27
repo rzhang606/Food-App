@@ -34,15 +34,11 @@
 
         </LinearLayout>
 
-
-
         <Spinner
             android:id="@+id/list_spinner"
             android:layout_width="match_parent"
             android:layout_height="60sp"
             android:entries="@array/sort_options" />
-
-
 
     </LinearLayout>
 
@@ -78,24 +74,11 @@
                 android:layout_gravity="end"/>
         </LinearLayout>
 
-<!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@color/cardview_light_background">-->
-
-<!--            <ListView-->
-<!--                android:id="@+id/myListView"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-<!--            </ListView>-->
-
-<!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
         <ListView
             android:id="@+id/myListView"
             android:background="@color/cardview_light_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -109,3 +92,4 @@
         app:menu="@menu/bottom_menu"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

@@ -8,6 +8,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,6 +75,10 @@ public class BusinessListView extends BottomNavigationActivity {
     }
 
     //Expands the search/filter text fields
+
+    /**
+     * Switches between expanded and half
+     */
     private void toggleFilters() {
         if(sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             sheetBehavior.setState((BottomSheetBehavior.STATE_HALF_EXPANDED));
@@ -82,6 +87,11 @@ public class BusinessListView extends BottomNavigationActivity {
         }
     }
 
+    /**
+     * Sets up the bottom sheet (which contains the list)
+     * @param coordLayoutID : coordinator layout (aka root element)
+     * @param contentID : the content of the dropdown ( the list view and its friends)
+     */
     private void setUpBottomSheet(int coordLayoutID, int contentID) {
         CoordinatorLayout coordinatorLayout = findViewById(coordLayoutID);
         LinearLayout contentLayout = coordinatorLayout.findViewById(contentID);
@@ -101,6 +111,9 @@ public class BusinessListView extends BottomNavigationActivity {
         });
     }
 
+    /**
+     * Sets up the list! Sets a item click listener and the footer view along with the scroll listener to load more upon scrolling to the bottom
+     */
     private void setUpList(){
 
         //Adapter for each row
@@ -121,8 +134,29 @@ public class BusinessListView extends BottomNavigationActivity {
                 startActivity(intent);
             }
         });
+
+        View footerView = getLayoutInflater().inflate(R.layout.list_view_footer, null, false);
+        myListView.addFooterView(footerView);
+
+
+        myListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                if(scrollState == SCROLL_STATE_IDLE && myListView.getLastVisiblePosition() == bArray.size()-1) {
+                    findViewById(R.id.list_progress_bar).setVisibility(View.VISIBLE);
+                    //add more items
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {}
+        });
     }
 
+    /**
+     * Sets up the spinner (dropdown) to allow sorting
+     * @param spinner : the spinner view
+     */
     private void setUpSpinner(Spinner spinner) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -140,22 +174,24 @@ public class BusinessListView extends BottomNavigationActivity {
                 }
                 setUpList();
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
+    /**
+     * Sets up the search function by creating a listener for the button press and grabbing the query
+     * @param context : activity context
+     * @param sQuery : query string from user
+     * @param sButton : the apply search button
+     */
     private void setUpSearch(final Context context, final EditText sQuery, Button sButton) {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String query = sQuery.getText().toString();
-                //search
                 Intent searchIntent = new Intent(context, search.class);
                 searchIntent.putExtra("List", query);
                 startActivity(searchIntent);
@@ -163,6 +199,12 @@ public class BusinessListView extends BottomNavigationActivity {
         });
     }
 
+    /**
+     * Provides sorting functionality for the bArray
+     * @param bArr : the array of businesses
+     * @param criteria : what the search criteria is
+     * @return : the sorted list
+     */
     private ArrayList<Business> sortList(ArrayList<Business> bArr, String criteria){
         Comparator<Business> comparator;
         if(criteria.equals("distance")) {
