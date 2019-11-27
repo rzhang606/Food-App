@@ -145,6 +145,11 @@ public class BusinessListView extends BottomNavigationActivity {
                 if(scrollState == SCROLL_STATE_IDLE && myListView.getLastVisiblePosition() == bArray.size()-1) {
                     findViewById(R.id.list_progress_bar).setVisibility(View.VISIBLE);
                     //add more items
+                    //preserve query is needed for this function
+                    //executing search with extra List_Offset with the value of the current size of bArr performs the search for new stuff
+                    //needs to add that on top of the current array and pass it back through
+                    //how to also maintain the current list?
+
                 }
             }
 

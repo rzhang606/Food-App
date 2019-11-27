@@ -43,7 +43,7 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
     private View.OnClickListener searchListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            executeSearch(searchView.getQuery().toString());
+            executeSearch(searchView.getQuery().toString(), 0);
         }
     };
 
@@ -68,15 +68,16 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
         //Check for redirection from list search
         Intent intent = getIntent();
         String listExtra = intent.getStringExtra("List");
+        int offsetExtra = intent.getIntExtra("List_Offset", 0);
         if(listExtra != null) {
-            executeSearch(listExtra);
+            executeSearch(listExtra, offsetExtra);
         }
     }
 
     /**
      * Button Execution to search
      */
-    private void executeSearch(String searchQuery) {
+    private void executeSearch(String searchQuery, int offset) {
 
         Log.d(LOG_TAG, "Words: " + searchQuery);
 
@@ -84,8 +85,7 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
         searchView.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
 
-
-        apiDataFetcher.search(searchQuery);
+        apiDataFetcher.search(searchQuery, offset);
     }
 
     /**
