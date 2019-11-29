@@ -24,21 +24,23 @@ import com.example.android.letseat.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class BusinessListView extends BottomNavigationActivity {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
+
+    //UI Elements
     BottomSheetBehavior sheetBehavior;
     Spinner spinner;
-    int currentSpinnerItem = 0;
     ListView myListView;
     EditText searchQuery;
     Button searchButton;
+
     ArrayList<Business> bArray = new ArrayList<>();
 
+    int currentSpinnerItem = 0;
 
     /**
      * Fetches data from source (search.java) and instantiates the adapter for the listview
@@ -48,21 +50,20 @@ public class BusinessListView extends BottomNavigationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_list_view);
-
         super.setNavigationListener(); // sets bottom nav bar
 
         //Grab values from the search results
         Intent intent = getIntent();
         bArray = intent.getParcelableArrayListExtra("DATA");
 
-        myListView = findViewById(R.id.myListView);
         //Set adapter for the list
+        myListView = findViewById(R.id.myListView);
         setUpList();
 
         //Set up the bottom sheet
         setUpBottomSheet(R.id.list_coordinator_layout, R.id.list_content_layout);
 
-        //Spinner
+        //Spinner (aka dropdown menu)
         spinner = findViewById(R.id.list_spinner);
         setUpSpinner(spinner);
 
@@ -74,10 +75,8 @@ public class BusinessListView extends BottomNavigationActivity {
 
     }
 
-    //Expands the search/filter text fields
-
     /**
-     * Switches between expanded and half
+     * Switches between expanded and half, bottom sheet locked otherwise
      */
     private void toggleFilters() {
         if(sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
@@ -135,15 +134,16 @@ public class BusinessListView extends BottomNavigationActivity {
             }
         });
 
+        //FooterView and the scroll listener handles loading more upon reaching bottom of list
         View footerView = getLayoutInflater().inflate(R.layout.list_view_footer, null, false);
         myListView.addFooterView(footerView);
-
 
         myListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
                 if(scrollState == SCROLL_STATE_IDLE && myListView.getLastVisiblePosition() == bArray.size()-1) {
                     findViewById(R.id.list_progress_bar).setVisibility(View.VISIBLE);
+                    // TODO:
                     //add more items
                     //preserve query is needed for this function
                     //executing search with extra List_Offset with the value of the current size of bArr performs the search for new stuff
@@ -177,7 +177,7 @@ public class BusinessListView extends BottomNavigationActivity {
                 } else if (selectedItem.equals("Price")) {
                     bArray = sortList(bArray, "price");
                 }
-                setUpList();
+                setUpList(); //TODO: set up list isnt the cheapest operation, need to handle this better
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
 

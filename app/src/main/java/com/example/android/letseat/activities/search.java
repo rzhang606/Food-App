@@ -26,28 +26,19 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
      */
 
     private static String LOG_TAG = search.class.getSimpleName();
-    private ArrayList<Business> bArray = new ArrayList<Business>();
+    public FetchAPIData apiDataFetcher;
 
     ProgressBar progressBar;
     Button searchButton;
     SearchView searchView;
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        if(progressBar != null){
-            progressBar.setVisibility(View.INVISIBLE);
-        }
+    protected void onStart() {
+        super.onStart();
+        searchButton.setVisibility(View.VISIBLE);
+        searchView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
     }
-
-    private View.OnClickListener searchListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            executeSearch(searchView.getQuery().toString(), 0);
-        }
-    };
-
-    public FetchAPIData apiDataFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +66,16 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
     }
 
     /**
+     * Listener
+     */
+    private View.OnClickListener searchListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            executeSearch(searchView.getQuery().toString(), 0);
+        }
+    };
+
+    /**
      * Button Execution to search
      */
     private void executeSearch(String searchQuery, int offset) {
@@ -90,11 +91,10 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
 
     /**
      * Runs after completion of background task
-     * @param bArr
+     * @param bArray : business array
      */
     @Override
-    public void apiResponse(ArrayList<Business> bArr) {
-        bArray = bArr;
+    public void apiResponse(ArrayList<Business> bArray) {
 
         Intent startListActivity = new Intent(this, BusinessListView.class);
 

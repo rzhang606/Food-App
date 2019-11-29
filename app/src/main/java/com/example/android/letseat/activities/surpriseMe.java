@@ -1,41 +1,20 @@
 package com.example.android.letseat.activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.android.letseat.APIDataResponse;
-import com.example.android.letseat.AsyncResponse;
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.fragments.BusinessDisplayFragment;
 import com.example.android.letseat.utility.FetchAPIData;
-import com.example.android.letseat.utility.FetchDataAsyncTask;
 import com.example.android.letseat.R;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class surpriseMe extends BottomNavigationActivity implements APIDataResponse {
@@ -53,7 +32,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
         setContentView(R.layout.activity_surprise_me);
         super.setNavigationListener();
 
-        Button button = (Button) findViewById(R.id.b_frag_another);
+        Button button = findViewById(R.id.b_frag_another);
         findAnotherListener(button);
 
         Intent intent = getIntent();
@@ -86,6 +65,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
                 try {
                     mFrag.Initialize(bArray.get(myRand));
                 } catch (Exception e) {
+                    Log.e(LOG_TAG, "Error attaching the get another button");
                     e.printStackTrace();
                 }
             }
