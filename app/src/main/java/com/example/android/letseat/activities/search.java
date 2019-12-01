@@ -86,11 +86,12 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
      * @param bArray : business array
      */
     @Override
-    public void apiResponse(ArrayList<Business> bArray) {
+    public void apiResponse(ArrayList<Business> bArray, String query) {
 
         Intent startListActivity = new Intent(this, BusinessListView.class);
 
         startListActivity.putParcelableArrayListExtra("DATA", bArray);
+        startListActivity.putExtra("QUERY", query);
         startActivity(startListActivity);
     }
 }

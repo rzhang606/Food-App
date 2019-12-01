@@ -34,6 +34,7 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
     private boolean footerSetUp = false;
+    private int currentSpinnerItem = 0;
 
     //UI Elements
     BottomSheetBehavior sheetBehavior;
@@ -42,11 +43,14 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
     EditText searchQuery;
     Button searchButton;
     ProgressBar bigProgressBar;
+    ProgressBar listProgressBar;
+    BusinessAdapter arrayAdapter;
 
+    //Data
     ArrayList<Business> bArray = new ArrayList<>();
+    String query;
 
-    int currentSpinnerItem = 0;
-
+    //Utility
     FetchAPIData apiDataFetcher;
 
     /**
@@ -62,6 +66,7 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
         //Grab values from the search results
         Intent intent = getIntent();
         bArray = intent.getParcelableArrayListExtra("DATA");
+        query = intent.getStringExtra("QUERY");
 
         //Set adapter for the list
         myListView = findViewById(R.id.myListView);
@@ -127,7 +132,7 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
     private void setUpList(){
 
         //Adapter for each row
-        BusinessAdapter arrayAdapter = new BusinessAdapter(this, R.layout.business_row, bArray);
+        arrayAdapter = new BusinessAdapter(this, R.layout.business_row, bArray);
         myListView.setAdapter(arrayAdapter);
 
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -156,20 +161,18 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
     private void setUpFooter() {
         //FooterView and the scroll listener handles loading more upon reaching bottom of list
         View footerView = getLayoutInflater().inflate(R.layout.list_view_footer, null, false);
-        myListView.addFooterView(footerView);
+        myListView.addFooterView(footerView,null,false);
 
         myListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                if(scrollState == SCROLL_STATE_IDLE && myListView.getLastVisiblePosition() == bArray.size()-1) {
-                    findViewById(R.id.list_progress_bar).setVisibility(View.VISIBLE);
-                    // TODO:
-                    //add more items
-                    //preserve query is needed for this function
-                    //executing search with extra List_Offset with the value of the current size of bArr performs the search for new stuff
-                    //needs to add that on top of the current array and pass it back through
-                    //how to also maintain the current list?
-
+                if(scrollState == SCROLL_STATE_IDLE && myListView.getLastVisiblePosition() >= bArray.size()-1) {
+                    listProgressBar = findViewById(R.id.list_progress_bar);
+                    listProgressBar.setVisibility(View.VISIBLE);
+                    Log.d(LOG_TAG, "Searching more");
+                    //Search more
+                    apiDataFetcher.search(query, bArray.size());
+                    Log.d(LOG_TAG, "Search More Executed ... ");
                 }
             }
             @Override
@@ -276,9 +279,18 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
      * @param bArr : values fetched
      */
     @Override
-    public void apiResponse(ArrayList<Business> bArr) {
-        bArray = bArr;
-        setUpList();
+    public void apiResponse(ArrayList<Business> bArr, String query) {
+
+        if(this.query.equals(query)) { //Load more
+            bArray.addAll(bArr);
+            listProgressBar.setVisibility((View.GONE));
+        } else { //First time searching this query
+            this.query = query;
+            bArray = bArr;
+        }
+
+        arrayAdapter.notifyDataSetChanged();
+
         myListView.setVisibility(View.VISIBLE);
         bigProgressBar.setVisibility(View.INVISIBLE);
 

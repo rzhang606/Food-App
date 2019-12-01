@@ -73,7 +73,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
     }
 
     @Override
-    public void apiResponse(ArrayList<Business> bArr) {
+    public void apiResponse(ArrayList<Business> bArr, String query) {
         bArray = bArr;
 
         Random rand = new Random();
