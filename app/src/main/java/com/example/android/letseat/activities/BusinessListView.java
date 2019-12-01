@@ -287,6 +287,7 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
         } else { //First time searching this query
             this.query = query;
             bArray = bArr;
+            setUpList();
         }
 
         arrayAdapter.notifyDataSetChanged();
