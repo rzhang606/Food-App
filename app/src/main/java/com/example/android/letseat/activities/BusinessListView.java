@@ -15,19 +15,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import com.example.android.letseat.APIDataResponse;
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.utility.BusinessAdapter;
 import com.example.android.letseat.R;
+import com.example.android.letseat.utility.FetchAPIData;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class BusinessListView extends BottomNavigationActivity {
+public class BusinessListView extends BottomNavigationActivity implements APIDataResponse {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
 
@@ -37,10 +40,13 @@ public class BusinessListView extends BottomNavigationActivity {
     ListView myListView;
     EditText searchQuery;
     Button searchButton;
+    ProgressBar bigProgressBar;
 
     ArrayList<Business> bArray = new ArrayList<>();
 
     int currentSpinnerItem = 0;
+
+    FetchAPIData apiDataFetcher;
 
     /**
      * Fetches data from source (search.java) and instantiates the adapter for the listview
@@ -68,6 +74,10 @@ public class BusinessListView extends BottomNavigationActivity {
         setUpSpinner(spinner);
 
         //Set up search
+        bigProgressBar = findViewById(R.id.list_big_progressBar);
+        apiDataFetcher = new FetchAPIData(this, this);
+        apiDataFetcher.apiDelegate = this;
+
         searchQuery = findViewById(R.id.list_search_query);
         searchButton = findViewById(R.id.list_search_button);
         setUpSearch(this, searchQuery, searchButton);
@@ -196,10 +206,14 @@ public class BusinessListView extends BottomNavigationActivity {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String query = sQuery.getText().toString();
-                Intent searchIntent = new Intent(context, search.class);
-                searchIntent.putExtra("List", query);
-                startActivity(searchIntent);
+                //Set UI
+                bigProgressBar.setVisibility(View.VISIBLE);
+                myListView.setVisibility(View.INVISIBLE);
+                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                //Execute search
+                apiDataFetcher.search(query);
             }
         });
     }
@@ -246,5 +260,21 @@ public class BusinessListView extends BottomNavigationActivity {
 
         return bArr;
 
+    }
+
+    /**
+     * Response of the search
+     * @param bArr : values fetched
+     */
+    @Override
+    public void apiResponse(ArrayList<Business> bArr) {
+        bArray = bArr;
+        setUpList();
+        myListView.setVisibility(View.VISIBLE);
+        bigProgressBar.setVisibility(View.INVISIBLE);
+
+        //New task instance must be created
+        apiDataFetcher = new FetchAPIData(this, this);
+        apiDataFetcher.apiDelegate = this;
     }
 }
