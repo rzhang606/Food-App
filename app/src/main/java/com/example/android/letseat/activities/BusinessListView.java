@@ -33,6 +33,7 @@ import java.util.Comparator;
 public class BusinessListView extends BottomNavigationActivity implements APIDataResponse {
 
     private final String LOG_TAG = BusinessListView.class.getSimpleName();
+    private boolean footerSetUp = false;
 
     //UI Elements
     BottomSheetBehavior sheetBehavior;
@@ -144,6 +145,15 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
             }
         });
 
+        if(!footerSetUp) {
+            setUpFooter();
+        }
+    }
+
+    /**
+     * Sets up bottom footer (loading circle) , and the logic for loading more items
+     */
+    private void setUpFooter() {
         //FooterView and the scroll listener handles loading more upon reaching bottom of list
         View footerView = getLayoutInflater().inflate(R.layout.list_view_footer, null, false);
         myListView.addFooterView(footerView);
@@ -162,7 +172,6 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
 
                 }
             }
-
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {}
         });
@@ -206,12 +215,12 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String query = sQuery.getText().toString();
                 //Set UI
                 bigProgressBar.setVisibility(View.VISIBLE);
                 myListView.setVisibility(View.INVISIBLE);
                 sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                footerSetUp = true;
                 //Execute search
                 apiDataFetcher.search(query);
             }
