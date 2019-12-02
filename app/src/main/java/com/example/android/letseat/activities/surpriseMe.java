@@ -2,14 +2,15 @@ package com.example.android.letseat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-import com.example.android.letseat.interfaces.APIDataResponse;
 import com.example.android.letseat.BottomNavigationActivity;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.fragments.BusinessDisplayFragment;
+import com.example.android.letseat.interfaces.APIDataResponse;
 import com.example.android.letseat.utility.FetchAPIData;
 import com.example.android.letseat.R;
 
@@ -31,7 +32,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
         setContentView(R.layout.activity_surprise_me);
         super.setNavigationListener();
 
-        Button button = (Button) findViewById(R.id.b_frag_another);
+        Button button = findViewById(R.id.b_frag_another);
         findAnotherListener(button);
 
         Intent intent = getIntent();
@@ -64,6 +65,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
                 try {
                     mFrag.Initialize(bArray.get(myRand));
                 } catch (Exception e) {
+                    Log.e(LOG_TAG, "Error attaching the get another button");
                     e.printStackTrace();
                 }
             }
@@ -71,7 +73,7 @@ public class surpriseMe extends BottomNavigationActivity implements APIDataRespo
     }
 
     @Override
-    public void apiResponse(ArrayList<Business> bArr) {
+    public void apiResponse(ArrayList<Business> bArr, String query) {
         bArray = bArr;
 
         Random rand = new Random();

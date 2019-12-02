@@ -27,6 +27,7 @@ public class FetchAPIData implements AsyncResponse {
 
     private final String LOG_TAG = FetchAPIData.class.getSimpleName();
     private FetchDataAsyncTask fetchDataTask = new FetchDataAsyncTask();
+    private String query;
 
     private WeakReference<Context> weak_context;
     private WeakReference<Activity> weak_activity;
@@ -48,6 +49,7 @@ public class FetchAPIData implements AsyncResponse {
     public void search(final String searchWord, final int offset) {
         Context context = weak_context.get();
         Activity activity = weak_activity.get();
+        query = searchWord;
 
         FetchLocation location = new FetchLocation(context, activity);
         Task<Location> locationTask = location.getLocation();
@@ -94,7 +96,7 @@ public class FetchAPIData implements AsyncResponse {
             }
 
             Log.d(LOG_TAG, bArr.toString());
-            apiDelegate.apiResponse(bArr);
+            apiDelegate.apiResponse(bArr, query);
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "ERROR: JSON Exception");
