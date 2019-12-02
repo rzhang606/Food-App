@@ -55,14 +55,6 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
         //
         apiDataFetcher = new FetchAPIData(this, this);
         apiDataFetcher.apiDelegate = this;
-
-        //Check for redirection from list search
-        Intent intent = getIntent();
-        String listExtra = intent.getStringExtra("List");
-        int offsetExtra = intent.getIntExtra("List_Offset", 0);
-        if(listExtra != null) {
-            executeSearch(listExtra, offsetExtra);
-        }
     }
 
     /**
@@ -71,14 +63,14 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
     private View.OnClickListener searchListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            executeSearch(searchView.getQuery().toString(), 0);
+            executeSearch(searchView.getQuery().toString());
         }
     };
 
     /**
      * Button Execution to search
      */
-    private void executeSearch(String searchQuery, int offset) {
+    private void executeSearch(String searchQuery) {
 
         Log.d(LOG_TAG, "Words: " + searchQuery);
 
@@ -86,7 +78,7 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
         searchView.setVisibility(View.INVISIBLE);
         searchButton.setVisibility(View.INVISIBLE);
 
-        apiDataFetcher.search(searchQuery, offset);
+        apiDataFetcher.search(searchQuery);
     }
 
     /**
@@ -94,11 +86,12 @@ public class search extends BottomNavigationActivity implements APIDataResponse 
      * @param bArray : business array
      */
     @Override
-    public void apiResponse(ArrayList<Business> bArray) {
+    public void apiResponse(ArrayList<Business> bArray, String query) {
 
         Intent startListActivity = new Intent(this, BusinessListView.class);
 
         startListActivity.putParcelableArrayListExtra("DATA", bArray);
+        startListActivity.putExtra("QUERY", query);
         startActivity(startListActivity);
     }
 }
