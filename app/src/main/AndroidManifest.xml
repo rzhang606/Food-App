@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.letseat">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -58,7 +53,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="yelpAPIKey"
-            android:value="-bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx" />
+            android:value="@string/yelp_api_key" />
 
         <activity
             android:name=".activities.search"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_api_auth">AIzaSyDbfF_pwUKf8jrXdnS9-bcuhj_Nm9Q5yYw</string>
+    <string name="yelp_api_key">-bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx</string>
+    <string name="apikey">Bearer -bNpLw2DnRiXMOGDBjWjrV5D24dolzowOYBCODuCrSfKWMY58Yl--O7V0sjbaVCs4dRD-TtmC9BcWQ1kiJOb2-kUbFlf4Cq72MmGXlnE5hckFe-wnM9pDPOZWMR9XHYx</string>
+</resources>
