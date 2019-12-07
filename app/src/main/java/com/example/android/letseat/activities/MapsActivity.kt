@@ -1,5 +1,6 @@
 package com.example.android.letseat.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -8,8 +9,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.android.letseat.BottomNavigationActivity
-
+import com.example.android.letseat.Business
 import com.example.android.letseat.R
+import com.example.android.letseat.interfaces.APIDataResponse
+import com.example.android.letseat.utility.FetchAPIData
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,15 +20,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import java.util.*
 
-class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback {
+class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResponse {
 
     private lateinit var mMap: GoogleMap
 
     //UI Elements
-    lateinit var searchText : EditText
-    lateinit var searchButton : Button
-    lateinit var sheetBehavior : BottomSheetBehavior<LinearLayout>
+    private lateinit var searchText : EditText
+    private lateinit var searchButton : Button
+    private lateinit var sheetBehavior : BottomSheetBehavior<LinearLayout>
+
+    //For search
+    private lateinit var apiDataFetcher : FetchAPIData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +42,11 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback {
         //Grab UI Elements
         searchText = findViewById(R.id.map_search_query)
         searchButton = findViewById(R.id.map_search_button)
+
+        //Search Set up
+        apiDataFetcher = FetchAPIData(this, this)
+        apiDataFetcher.apiDelegate = this
+        setUpSearch( searchText, searchButton)
 
         //Bottom Sheet Setup
         setUpBottomSheet(R.id.map_coordinator_layout, R.id.map_content_layout)
@@ -64,6 +76,22 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback {
     }
 
     /**
+     * Sets up the search function by creating a listener for the button press and grabbing the query
+     * @param context : activity context
+     * @param sQuery : query string from user
+     * @param sButton : the apply search button
+     */
+    private fun setUpSearch(sQuery: EditText, sButton: Button) {
+        sButton.setOnClickListener {
+            val query = sQuery.text.toString()
+            //Set UI
+            sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            //Execute search
+            apiDataFetcher.search(query)
+        }
+    }
+
+    /**
      * Switches between expanded and half, bottom sheet locked otherwise
      */
     private fun toggleFilters() {
@@ -84,12 +112,48 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback {
         val contentLayout = coordinatorLayout.findViewById<LinearLayout>(contentID)
 
         sheetBehavior = BottomSheetBehavior.from(contentLayout)
-        sheetBehavior.setFitToContents(false)
-        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
-        sheetBehavior.setHideable(false)
+        sheetBehavior.isFitToContents = false
+        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         //Pressing the filter icon opens up the search option and filters
         val filterIcon = findViewById<ImageView>(R.id.map_filterIcon)
         filterIcon.setOnClickListener( View.OnClickListener { toggleFilters() })
+    }
+
+    /**
+     * Response of the search
+     * @param bArr : values fetched
+     */
+    override fun apiResponse(bArr: ArrayList<Business?>, query: String) {
+        //set markers
+
+        //New task instance must be created
+        apiDataFetcher = FetchAPIData(this, this)
+        apiDataFetcher.apiDelegate = this
+    }
+
+    /**
+     * Sets a single marker
+     * @param business : the business to set as a marker
+     */
+    private fun setMarker(business : Business) {
+        mMap.addMarker(MarkerOptions().position(   ).title(business.name))
+    }
+
+    /**
+     * Sets the array of businesses as markers
+     * @param bArr : Array of businesses
+     */
+    private fun setMarkerArray(bArr : ArrayList<Business>) {
+        for (item in bArr) {
+            setMarker(item)
+        }
+    }
+
+    /**
+     * Sets the information window for a single business
+     */
+    private fun setInfoWindow(business: Business) {
+
     }
 }

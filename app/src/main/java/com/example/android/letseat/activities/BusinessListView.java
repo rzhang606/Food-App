@@ -86,7 +86,7 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
 
         searchQuery = findViewById(R.id.list_search_query);
         searchButton = findViewById(R.id.list_search_button);
-        setUpSearch(this, searchQuery, searchButton);
+        setUpSearch(searchQuery, searchButton);
 
 
     }
@@ -114,7 +114,6 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
         sheetBehavior = BottomSheetBehavior.from(contentLayout);
         sheetBehavior.setFitToContents(false);
         sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        sheetBehavior.setHideable(false);
 
         //Pressing the filter icon opens up the search option and filters
         ImageView filterIcon = coordinatorLayout.findViewById(R.id.filterIcon);
@@ -210,11 +209,10 @@ public class BusinessListView extends BottomNavigationActivity implements APIDat
 
     /**
      * Sets up the search function by creating a listener for the button press and grabbing the query
-     * @param context : activity context
      * @param sQuery : query string from user
      * @param sButton : the apply search button
      */
-    private void setUpSearch(final Context context, final EditText sQuery, Button sButton) {
+    private void setUpSearch(final EditText sQuery, Button sButton) {
         sButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
