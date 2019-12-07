@@ -27,8 +27,11 @@ public class Business implements Parcelable {
     private String phone;
     private double distance;
     private String price;
+    private double latitude;
+    private double longitude;
 
-    public Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress, String phone, double distance, String price) {
+    public Business(String name, boolean isClosed, String imageURL, List<String> categories, int rating, String displayAddress,
+                    String phone, double distance, String price, double latitude, double longitude) {
         this.name = name;
         this.isClosed = isClosed;
         this.imageURL = imageURL;
@@ -38,6 +41,8 @@ public class Business implements Parcelable {
         this.phone = phone;
         this.distance = distance;
         this.price = price;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Business(Parcel source) {
@@ -51,6 +56,8 @@ public class Business implements Parcelable {
         this.phone = source.readString();
         this.distance = source.readDouble();
         this.price = source.readString();
+        this.latitude = source.readDouble();
+        this.longitude = source.readDouble();
 
     }
 
@@ -71,6 +78,8 @@ public class Business implements Parcelable {
         dest.writeString(phone);
         dest.writeDouble(distance);
         dest.writeString(price);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 
     @Override
@@ -115,6 +124,10 @@ public class Business implements Parcelable {
     public String getPrice() {
         return price;
     }
+
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
 
 
 }

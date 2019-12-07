@@ -1,7 +1,8 @@
 package com.example.android.letseat.activities
 
-import android.content.Context
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -13,6 +14,7 @@ import com.example.android.letseat.Business
 import com.example.android.letseat.R
 import com.example.android.letseat.interfaces.APIDataResponse
 import com.example.android.letseat.utility.FetchAPIData
+import com.example.android.letseat.utility.FetchLocation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,6 +26,7 @@ import java.util.*
 
 class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResponse {
 
+    private val LOG_TAG = "MapsActivity"
     private lateinit var mMap: GoogleMap
 
     //UI Elements
@@ -33,6 +36,9 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
 
     //For search
     private lateinit var apiDataFetcher : FetchAPIData
+
+    //Data
+    private var location = Location("San Francisco")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +75,24 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val fetchLocation = FetchLocation(this, this)
+        val locationTask = fetchLocation.location
+        locationTask.addOnSuccessListener { locationResult ->
+            if (locationResult != null) {
+
+                Log.d(LOG_TAG, "Setting camera to location ... $locationResult")
+                location = locationResult
+
+                val coordinates = LatLng(location.latitude, location.longitude)
+                val zoom = 15.0f
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, zoom))
+
+                apiDataFetcher.search("")
+
+            } else {
+                Log.d(LOG_TAG, "Location finding error: NULL retrieved")
+            }
+        }
     }
 
     /**
@@ -124,8 +144,9 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      * Response of the search
      * @param bArr : values fetched
      */
-    override fun apiResponse(bArr: ArrayList<Business?>, query: String) {
+    override fun apiResponse(bArr: ArrayList<Business>, query: String) {
         //set markers
+        setMarkerArray(bArr)
 
         //New task instance must be created
         apiDataFetcher = FetchAPIData(this, this)
@@ -137,7 +158,8 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      * @param business : the business to set as a marker
      */
     private fun setMarker(business : Business) {
-        mMap.addMarker(MarkerOptions().position(   ).title(business.name))
+        val location = LatLng(business.latitude, business.longitude)
+        mMap.addMarker(MarkerOptions().position(location).title(business.name))
     }
 
     /**
@@ -145,6 +167,7 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      * @param bArr : Array of businesses
      */
     private fun setMarkerArray(bArr : ArrayList<Business>) {
+        Log.d(LOG_TAG, "Setting Markers ... ")
         for (item in bArr) {
             setMarker(item)
         }
