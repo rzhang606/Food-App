@@ -1,20 +1,26 @@
 package com.example.android.letseat.fragments;
 
 
+import android.content.Intent;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.letseat.App;
 import com.example.android.letseat.Business;
 import com.example.android.letseat.R;
 import com.squareup.picasso.Picasso;
 
+import java.net.URI;
 import java.text.DecimalFormat;
 
 
@@ -41,7 +47,7 @@ public class BusinessDisplayFragment extends Fragment {
      * Populates the view with properties from the business class
      */
 
-    public void Initialize(Business myBusiness) {
+    public void Initialize(final Business myBusiness) {
         View view = getView();
 
         if (view != null) {
@@ -74,6 +80,22 @@ public class BusinessDisplayFragment extends Fragment {
             TextView price = view.findViewById(R.id.b_frag_price);
             price.setText("Price: " + myBusiness.getPrice());
             Log.d("FRAGMENT: ", "Frag Init: " + myBusiness.getPrice());
+
+            Button maps_button = view.findViewById(R.id.sm_map_button);
+            maps_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri gmmURI = Uri.parse("google.navigation:q=" + Uri.encode(myBusiness.getDisplayAddress()));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmURI);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    if(mapIntent.resolveActivity(App.getContext().getPackageManager()) != null) {
+                        startActivity(mapIntent);
+                    } else {
+                        Toast toast = Toast.makeText(App.getContext(), "No map app available", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
+            });
 
         }
 

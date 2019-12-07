@@ -147,10 +147,6 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      * @param bArr : values fetched
      */
     override fun apiResponse(bArr: ArrayList<Business>, query: String) {
-        //set markers
-        for(marker in markerArray) {
-            marker.remove()
-        }
 
         setMarkerArray(bArr)
 
@@ -175,6 +171,10 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     private fun setMarkerArray(bArr : ArrayList<Business>) {
         Log.d(LOG_TAG, "Setting Markers ... ")
+        for(marker in markerArray) {
+            marker.remove()
+        }
+
         for (item in bArr) {
             setMarker(item)
         }
