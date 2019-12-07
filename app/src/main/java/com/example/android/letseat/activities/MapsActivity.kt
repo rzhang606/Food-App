@@ -1,6 +1,7 @@
 package com.example.android.letseat.activities
 
 import android.location.Location
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -41,6 +42,7 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
     //Data
     private var location = Location("San Francisco")
     private var markerArray = ArrayList<Marker>()
+    private var searchQuery = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,11 +107,11 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     private fun setUpSearch(sQuery: EditText, sButton: Button) {
         sButton.setOnClickListener {
-            val query = sQuery.text.toString()
+            searchQuery = sQuery.text.toString()
             //Set UI
             sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             //Execute search
-            apiDataFetcher.search(query)
+            apiDataFetcher.search(searchQuery)
         }
     }
 
@@ -140,6 +142,10 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
         //Pressing the filter icon opens up the search option and filters
         val filterIcon = findViewById<ImageView>(R.id.map_filterIcon)
         filterIcon.setOnClickListener( View.OnClickListener { toggleFilters() })
+
+        //Load more icon
+        val loadMoreIcon = findViewById<ImageView>(R.id.map_more_icon)
+        loadMoreIcon.setOnClickListener(View.OnClickListener { apiDataFetcher.search(searchQuery, markerArray.size) })
     }
 
     /**
@@ -148,7 +154,9 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     override fun apiResponse(bArr: ArrayList<Business>, query: String) {
 
-        setMarkerArray(bArr)
+        val newQuery = searchQuery != query
+        setMarkerArray(bArr, newQuery)
+
 
         //New task instance must be created
         apiDataFetcher = FetchAPIData(this, this)
@@ -169,10 +177,11 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      * Sets the array of businesses as markers
      * @param bArr : Array of businesses
      */
-    private fun setMarkerArray(bArr : ArrayList<Business>) {
+    private fun setMarkerArray(bArr : ArrayList<Business>, deleteCurrent : Boolean) {
         Log.d(LOG_TAG, "Setting Markers ... ")
-        for(marker in markerArray) {
-            marker.remove()
+        if (deleteCurrent) {
+            Log.d(LOG_TAG, "Removing current markers ... ")
+            for(marker in markerArray) { marker.remove() }
         }
 
         for (item in bArr) {

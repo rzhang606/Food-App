@@ -70,10 +70,18 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:text="Map" />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:paddingEnd="5sp"
+                android:id="@+id/map_more_icon"
+                android:src="@android:drawable/ic_input_add"
+                android:layout_gravity="end"/>
+
+            <ImageView
+                android:layout_width="40sp"
+                android:layout_height="40sp"
                 android:id="@+id/map_filterIcon"
-                android:src="@drawable/ic_launcher_foreground"
+                android:src="@android:drawable/ic_menu_search"
                 android:layout_gravity="end"/>
         </LinearLayout>
 
