@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.*
@@ -39,6 +40,7 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
 
     //Data
     private var location = Location("San Francisco")
+    private var markerArray = ArrayList<Marker>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +148,10 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     override fun apiResponse(bArr: ArrayList<Business>, query: String) {
         //set markers
+        for(marker in markerArray) {
+            marker.remove()
+        }
+
         setMarkerArray(bArr)
 
         //New task instance must be created
@@ -159,7 +165,8 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     private fun setMarker(business : Business) {
         val location = LatLng(business.latitude, business.longitude)
-        mMap.addMarker(MarkerOptions().position(location).title(business.name))
+        val marker = mMap.addMarker(MarkerOptions().position(location).title(business.name))
+        markerArray.add(marker)
     }
 
     /**
