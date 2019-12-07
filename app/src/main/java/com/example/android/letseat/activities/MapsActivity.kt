@@ -5,10 +5,7 @@ import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.example.android.letseat.BottomNavigationActivity
 import com.example.android.letseat.Business
@@ -20,9 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.*
 
@@ -91,6 +86,11 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
                 val zoom = 15.0f
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, zoom))
 
+                mMap.addMarker(MarkerOptions()
+                        .position(coordinates)
+                        .title("You are here!")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)))
+
                 apiDataFetcher.search("")
 
             } else {
@@ -145,7 +145,11 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
 
         //Load more icon
         val loadMoreIcon = findViewById<ImageView>(R.id.map_more_icon)
-        loadMoreIcon.setOnClickListener(View.OnClickListener { apiDataFetcher.search(searchQuery, markerArray.size) })
+        loadMoreIcon.setOnClickListener(View.OnClickListener {
+            val progressBar = findViewById<ProgressBar>(R.id.map_big_progressBar)
+            progressBar.visibility = View.VISIBLE
+            apiDataFetcher.search(searchQuery, markerArray.size)
+        })
     }
 
     /**
@@ -156,7 +160,6 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
 
         val newQuery = searchQuery != query
         setMarkerArray(bArr, newQuery)
-
 
         //New task instance must be created
         apiDataFetcher = FetchAPIData(this, this)
@@ -169,7 +172,10 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     private fun setMarker(business : Business) {
         val location = LatLng(business.latitude, business.longitude)
-        val marker = mMap.addMarker(MarkerOptions().position(location).title(business.name))
+        val marker = mMap.addMarker(MarkerOptions()
+                .position(location)
+                .title(business.name))
+
         markerArray.add(marker)
     }
 
@@ -187,6 +193,9 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
         for (item in bArr) {
             setMarker(item)
         }
+
+        val progressBar = findViewById<ProgressBar>(R.id.map_big_progressBar)
+        progressBar.visibility = View.INVISIBLE
     }
 
     /**
