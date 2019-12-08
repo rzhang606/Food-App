@@ -11,6 +11,7 @@ import com.example.android.letseat.BottomNavigationActivity
 import com.example.android.letseat.Business
 import com.example.android.letseat.R
 import com.example.android.letseat.interfaces.APIDataResponse
+import com.example.android.letseat.utility.CustomInfoWindowAdapter
 import com.example.android.letseat.utility.FetchAPIData
 import com.example.android.letseat.utility.FetchLocation
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -21,7 +22,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import java.util.*
 
-class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResponse {
+class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResponse{
 
     private val LOG_TAG = "MapsActivity"
     private lateinit var mMap: GoogleMap
@@ -74,6 +75,10 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        //Set CustomInfoWindow
+        mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
+
+        //Locate user, populate map
         val fetchLocation = FetchLocation(this, this)
         val locationTask = fetchLocation.location
         locationTask.addOnSuccessListener { locationResult ->
@@ -172,9 +177,8 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
      */
     private fun setMarker(business : Business) {
         val location = LatLng(business.latitude, business.longitude)
-        val marker = mMap.addMarker(MarkerOptions()
-                .position(location)
-                .title(business.name))
+        val marker = mMap.addMarker(MarkerOptions().position(location))
+        marker.tag = business
 
         markerArray.add(marker)
     }
@@ -198,10 +202,4 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
         progressBar.visibility = View.INVISIBLE
     }
 
-    /**
-     * Sets the information window for a single business
-     */
-    private fun setInfoWindow(business: Business) {
-
-    }
 }
