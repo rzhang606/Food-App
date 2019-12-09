@@ -78,6 +78,18 @@ class MapsActivity : BottomNavigationActivity(), OnMapReadyCallback, APIDataResp
         //Set CustomInfoWindow
         mMap.setInfoWindowAdapter(CustomInfoWindowAdapter(this))
 
+        mMap.setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+            override fun onMarkerClick(marker: Marker): Boolean {
+                if(marker.title == "You are here!"){
+                    Log.d(LOG_TAG, "Showed current location marker")
+                } else {
+                    Log.d(LOG_TAG, "Showing info window")
+                    marker.showInfoWindow()
+                }
+                return true
+            }
+        })
+
         //Locate user, populate map
         val fetchLocation = FetchLocation(this, this)
         val locationTask = fetchLocation.location
