@@ -116,6 +116,7 @@ xmlns:tools="http://schemas.android.com/tools">
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="@color/primary"
+    app:labelVisibilityMode="unlabeled"
     app:itemIconTint="@color/icons"
     app:itemTextColor="@color/primary_text"
     app:menu="@menu/bottom_menu"/>
