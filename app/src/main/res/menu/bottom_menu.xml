@@ -9,6 +9,10 @@
         android:title="Search"
         android:icon="@drawable/boba" />
     <item
+        android:id="@+id/map_option"
+        android:title="Map"
+        android:icon="@drawable/coffee" />
+    <item
         android:id="@+id/settings_option"
         android:title="Settings"
         android:icon="@drawable/candy"/>

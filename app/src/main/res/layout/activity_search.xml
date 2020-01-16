@@ -39,6 +39,7 @@
         android:layout_gravity="bottom"
         android:background="@color/primary"
         android:layout_alignParentBottom="true"
+        app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/icons"
         app:itemTextColor="@color/primary_text"
         app:menu="@menu/bottom_menu"/>

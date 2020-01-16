@@ -124,6 +124,8 @@ public class FetchAPIData implements AsyncResponse {
             JSONArray jsonLocation = obj.getJSONObject("location").getJSONArray("display_address");
             String location = jsonLocation.toString();
 
+            JSONObject coordinates = obj.getJSONObject("coordinates");
+
             //construct new business and put into the map
             Business business = new Business(
                     obj.getString("name"),
@@ -134,7 +136,9 @@ public class FetchAPIData implements AsyncResponse {
                     location,
                     obj.getString("phone"),
                     obj.getDouble("distance"),
-                    obj.getString("price")
+                    obj.getString("price"),
+                    coordinates.getDouble("latitude"),
+                    coordinates.getDouble("longitude")
             );
 
             return business;

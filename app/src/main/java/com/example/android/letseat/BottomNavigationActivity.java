@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.android.letseat.activities.MapsActivity;
 import com.example.android.letseat.activities.search;
 import com.example.android.letseat.activities.surpriseMe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,13 +34,16 @@ public class BottomNavigationActivity extends AppCompatActivity {
            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                Intent intent;
                switch(menuItem.getItemId()) {
+                   case R.id.surprise_option:
+                       intent = new Intent(mcontext, surpriseMe.class);
+                       startActivity(intent);
+                       break;
                    case R.id.search_option:
                        intent = new Intent(mcontext, search.class);
                        startActivity(intent);
                        break;
-
-                   case R.id.surprise_option:
-                       intent = new Intent(mcontext, surpriseMe.class);
+                   case R.id.map_option:
+                       intent = new Intent(mcontext, MapsActivity.class);
                        startActivity(intent);
                        break;
                }
