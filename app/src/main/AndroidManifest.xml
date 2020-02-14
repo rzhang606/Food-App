@@ -33,7 +33,7 @@
         <activity
             android:name=".activities.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".activities.mainMenu">
+        <activity android:name=".activities.MainMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,11 +43,11 @@
         <activity
             android:name=".activities.surpriseMe"
             android:label="@string/sm_name"
-            android:parentActivityName=".activities.mainMenu" />
+            android:parentActivityName=".activities.MainMenu" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.example.android.letseat.activities.mainMenu" />
+            android:value="com.example.android.letseat.activities.MainMenu" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
