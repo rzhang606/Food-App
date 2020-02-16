@@ -43,5 +43,15 @@ class MainMenu : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Maps Activity
+     */
+
+    fun mapsButton(view : View) {
+        Log.d(LOG_TAG, "Lauched maps activity")
+        val intent = Intent(this, MapsActivity::class.java)
+        startActivity(intent)
+    }
+
 
 }

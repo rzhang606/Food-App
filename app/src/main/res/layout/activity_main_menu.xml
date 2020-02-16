@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.mainMenu">
+    tools:context=".activities.MainMenu">
 
     <ImageView
         android:id="@+id/mainImage"
@@ -23,26 +23,36 @@
         app:fontFamily="@font/rubik" />
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_below="@id/myText"
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonLeft"
-            android:layout_width="120dp"
+            android:id="@+id/buttonSurprise"
+            android:layout_width="120sp"
             android:layout_height="wrap_content"
-            android:onClick="surpriseMeButton"
-            android:layout_marginStart="50dp"
-            android:hint="Surprise Me" />
+            android:layout_marginStart="150sp"
+            android:hint="Surprise Me"
+            android:onClick="surpriseMeButton" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonRight"
-            android:layout_width="120dp"
+            android:id="@+id/buttonSearch"
+            android:layout_width="120sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="150sp"
             android:hint="Search"
             android:onClick="searchButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonMaps"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150sp"
+            android:hint="Maps"
+            android:onClick="mapsButton" />
+
+
     </LinearLayout>
 
 </RelativeLayout>
